@@ -8,7 +8,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Models\" />
     <Folder Include="Exceptions\" />
     <Folder Include="DataAccess\" />
   </ItemGroup>
