@@ -9,7 +9,10 @@
 
   <ItemGroup>
     <Folder Include="Exceptions\" />
-    <Folder Include="DataAccess\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Data.SqlClient" Version="6.1.4" />
   </ItemGroup>
 
 </Project>

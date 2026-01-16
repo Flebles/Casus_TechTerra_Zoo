@@ -13,23 +13,35 @@ namespace TechTerra_Zoo.Models
         protected string geluid;
         protected bool heeftVacht;
 
-        public int aantalPoten { get; protected set; }
+        public int AantalPoten { get; protected set; }
+        public string Naam => naam;
+        public string Geluid => geluid;
+        public bool HeeftVacht => heeftVacht;
 
-        public Dier(int id, string naam, string geluid, int aantalPoten)
+        protected Dier(int id, string naam, string geluid, int aantalPoten, bool heeftVacht)
         {
             this.id = id;
             this.naam = naam;
-            this.aantalPoten = aantalPoten;
-        }
-     
-        public string MaakGeluid()
-        {
-            return $"{naam} maakt het geluid {geluid}";
+            this.geluid = geluid;
+            this.AantalPoten = aantalPoten;
+            this.heeftVacht = heeftVacht;
         }
 
-        public string Eten()
+        public virtual string MaakGeluid()
         {
-            return $"{naam} eet zijn voer";
+            return $"{naam} maakt het geluid: {geluid}";
         }
+
+        public virtual string Eet()
+        {
+            return $"{naam} eet zijn voer.";
+        }
+
+        public override string ToString()
+        {
+            return $"Dier #{id} - {naam} ({AantalPoten} poten)";
+        }
+
     }
+
 }
