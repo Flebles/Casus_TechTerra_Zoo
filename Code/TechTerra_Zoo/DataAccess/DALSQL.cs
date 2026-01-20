@@ -24,6 +24,63 @@ namespace TechTerra_Zoo.DataAccess
                 $"Database={database};" +
                 $"Trusted_Connection=True;" +
                 $"TrustServerCertificate=True;";
+
+            ZorgDatDatabaseBestaat();
+            ZorgDatTabellenBestaan();
+        }
+
+        private void ZorgDatDatabaseBestaat()
+        {
+            string masterConnectionString =
+                $"Server={webserver};" +
+                $"Database=master;" +
+                $"Trusted_Connection=True;" +
+                $"TrustServerCertificate=True;";
+
+            string query = $@"
+                IF NOT EXISTS (
+                    SELECT name 
+                    FROM sys.databases 
+                    WHERE name = N'{database}'
+                )
+                BEGIN
+                    CREATE DATABASE [{database}]
+                END
+            ";
+
+            using SqlConnection connection = new SqlConnection(masterConnectionString);
+            using SqlCommand command = new SqlCommand(query, connection);
+
+            connection.Open();
+            command.ExecuteNonQuery();
+        }
+
+        private void ZorgDatTabellenBestaan()
+        {
+            string query = @"
+                IF NOT EXISTS (
+                    SELECT * 
+                    FROM sys.objects 
+                    WHERE object_id = OBJECT_ID(N'[dbo].[Dier]')
+                      AND type = N'U'
+                )
+                BEGIN
+                    CREATE TABLE Dier
+                    (
+                        Id INT IDENTITY(1,1) PRIMARY KEY,
+                        Naam NVARCHAR(100) NOT NULL,
+                        Geluid NVARCHAR(100) NOT NULL,
+                        AantalPoten INT NOT NULL,
+                        HeeftVacht BIT NOT NULL
+                    )
+                END
+            ";
+
+            using SqlConnection connection = new SqlConnection(connectionstring);
+            using SqlCommand command = new SqlCommand(query, connection);
+
+            connection.Open();
+            command.ExecuteNonQuery();
         }
 
         public void AddDier(Dier dier)
@@ -68,7 +125,7 @@ namespace TechTerra_Zoo.DataAccess
                 int aantalPoten = (int)reader["AantalPoten"];
                 bool heeftVacht = (bool)reader["HeeftVacht"];
 
-                // Tijdelijk: alles als Leeuw (later verbeteren)
+                // Tijdelijk: alles als Leeuw
                 Dier dier = new Leeuw(id, naam, geluid, aantalPoten, heeftVacht);
                 dieren.Add(dier);
             }
