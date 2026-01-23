@@ -78,7 +78,7 @@ namespace TechTerra_Zoo.DataAccess
                     (
                         Id INT IDENTITY(1,1) PRIMARY KEY,
                         verblijfNaam NVARCHAR(100) NOT NULL,
-                        capaciteit INT NOT NULL,
+                        Capaciteit INT NOT NULL,
                     )
                 END
             ";
@@ -143,7 +143,7 @@ namespace TechTerra_Zoo.DataAccess
         {
             using (SqlConnection connection = new SqlConnection(connectionstring))
             {
-                string query = "INSERT INTO Verblijf (Verblijf, Capaciteit) VALUES (@verblijf, @capaciteit)";
+                string query = "INSERT INTO Verblijf (verblijfNaam, Capaciteit) VALUES (@verblijf, @capaciteit)";
 
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
@@ -159,7 +159,7 @@ namespace TechTerra_Zoo.DataAccess
         public List<Verblijf> GetAllVerblijven()
         {
             List<Verblijf> verblijven = new List<Verblijf>();
-            string query = "SELECT Id, Verblijf, capaciteit FROM Verblijf";
+            string query = "SELECT Id, verblijfNaam, Capaciteit FROM Verblijf";
 
             using (SqlConnection connection = new SqlConnection(connectionstring))
             using (SqlCommand command = new SqlCommand(query, connection))
