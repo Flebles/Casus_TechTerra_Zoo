@@ -73,6 +73,13 @@ namespace TechTerra_Zoo.DataAccess
                         AantalPoten INT NOT NULL,
                         HeeftVacht BIT NOT NULL
                     )
+                    
+                    CREATE TABLE Verblijf
+                    (
+                        Id INT IDENTITY(1,1) PRIMARY KEY,
+                        verblijfNaam NVARCHAR(100) NOT NULL,
+                        capaciteit INT NOT NULL,
+                    )
                 END
             ";
 
@@ -132,5 +139,50 @@ namespace TechTerra_Zoo.DataAccess
 
             return dieren;
         }
+        public void AddVerblijf(Verblijf verblijf)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionstring))
+            {
+                string query = "INSERT INTO Verblijf (Verblijf, Capaciteit) VALUES (@verblijf, @capaciteit)";
+
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@verblijf", verblijf.VerblijfNaam);
+                    command.Parameters.AddWithValue("@capaciteit", verblijf.Capaciteit);
+
+                    connection.Open();
+                    command.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public List<Verblijf> GetAllVerblijven()
+        {
+            List<Verblijf> verblijven = new List<Verblijf>();
+            string query = "SELECT Id, Verblijf, capaciteit FROM Verblijf";
+
+            using (SqlConnection connection = new SqlConnection(connectionstring))
+            using (SqlCommand command = new SqlCommand(query, connection))
+            {
+                connection.Open();
+
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        Verblijf verblijf = new Verblijf(
+                            reader.GetInt32(0),
+                            reader.GetString(1),
+                            reader.GetInt32(2)
+                        );
+
+                        verblijven.Add(verblijf);
+                    }
+                }
+            }
+
+            return verblijven;
+        }
+
     }
 }

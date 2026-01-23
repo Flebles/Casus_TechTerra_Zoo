@@ -35,6 +35,28 @@ namespace TechTerra_Zoo
             }
 
             Console.ReadLine();
+
+            Verblijf nieuwVerblijf = new Verblijf
+            {
+                VerblijfNaam = "A102",
+                Capaciteit = 13
+            };
+
+            nieuwVerblijf.CreateVerblijf();
+
+            Verblijf emptyVerblijf = new Verblijf();
+            List<Verblijf> verblijven = emptyVerblijf.GetAllVerblijven();
+
+            Console.WriteLine("Overzicht van alle verblijven:\n");
+
+            foreach (Verblijf verblijf in verblijven)
+            {
+                Console.WriteLine(
+                    $"{verblijf.Id}: {verblijf.VerblijfNaam} (Capaciteit: {verblijf.Capaciteit})"
+                );
+            }
+            Console.ReadLine();
+
         }
     }
 }
