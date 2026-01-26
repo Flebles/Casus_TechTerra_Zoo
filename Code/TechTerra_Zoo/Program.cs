@@ -36,10 +36,42 @@ namespace TechTerra_Zoo
 
             Console.ReadLine();
 
+            VoedingSchema voeding = new VoedingSchema
+            {
+                Tijd = "08:00",
+                Voeding = "Vlees",
+                Hoeveelheid = "5 kg",
+                Uitzonderingen = "Niet op zondag"
+            };
+
+            voeding.AddVoeding();
+
+            VoedingSchema empty = new VoedingSchema();
+            List<VoedingSchema> voedingen = empty.GetAllVoeding();
+
+            Console.WriteLine("Voedingschema:\n");
+
+            foreach (var v in voedingen)
+            {
+                Console.WriteLine(
+                    $"{v.Id} | {v.Tijd} | {v.Voeding} | {v.Hoeveelheid} | {v.Uitzonderingen}"
+                );
+            }
+
+            Console.Write("Voer de verblijfnaam in: ");
+            string verblijfNaam = Console.ReadLine();
+
+            int capaciteit;
+            Console.Write("Voer de capaciteit in: ");
+            while (!int.TryParse(Console.ReadLine(), out capaciteit))
+            {
+                Console.Write("Ongeldige invoer. Voer een geldig getal in voor capaciteit: ");
+            }
+
             Verblijf nieuwVerblijf = new Verblijf
             {
-                VerblijfNaam = "A102",
-                Capaciteit = 13
+                VerblijfNaam = verblijfNaam,
+                Capaciteit = capaciteit
             };
 
             nieuwVerblijf.CreateVerblijf();
@@ -47,7 +79,7 @@ namespace TechTerra_Zoo
             Verblijf emptyVerblijf = new Verblijf();
             List<Verblijf> verblijven = emptyVerblijf.GetAllVerblijven();
 
-            Console.WriteLine("Overzicht van alle verblijven:\n");
+            Console.WriteLine("\nOverzicht van alle verblijven:\n");
 
             foreach (Verblijf verblijf in verblijven)
             {

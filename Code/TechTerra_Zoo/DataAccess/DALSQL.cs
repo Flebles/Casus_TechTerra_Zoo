@@ -80,6 +80,15 @@ namespace TechTerra_Zoo.DataAccess
                         verblijfNaam NVARCHAR(100) NOT NULL,
                         Capaciteit INT NOT NULL,
                     )
+
+                    CREATE TABLE VoedingSchema
+                    (
+                        Id INT IDENTITY(1,1) PRIMARY KEY,
+                        Tijd NVARCHAR(50) NOT NULL,
+                        Voeding NVARCHAR(100) NOT NULL,
+                        Hoeveelheid NVARCHAR(50) NOT NULL,
+                        Uitzonderingen NVARCHAR(255) NULL
+                    );
                 END
             ";
 
@@ -183,6 +192,59 @@ namespace TechTerra_Zoo.DataAccess
 
             return verblijven;
         }
+        public void AddVoeding(VoedingSchema voeding)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionstring))
+            {
+                string query = @"INSERT INTO VoedingSchema 
+                         (Tijd, Voeding, Hoeveelheid, Uitzonderingen)
+                         VALUES (@tijd, @voeding, @hoeveelheid, @uitzonderingen)";
+
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@tijd", voeding.Tijd);
+                    command.Parameters.AddWithValue("@voeding", voeding.Voeding);
+                    command.Parameters.AddWithValue("@hoeveelheid", voeding.Hoeveelheid);
+                    command.Parameters.AddWithValue(
+                        "@uitzonderingen",
+                        voeding.Uitzonderingen ?? (object)DBNull.Value
+                    );
+
+                    connection.Open();
+                    command.ExecuteNonQuery();
+                }
+            }
+        }
+        public List<VoedingSchema> GetAllVoeding()
+        {
+            List<VoedingSchema> voedingen = new List<VoedingSchema>();
+            string query = "SELECT Id, Tijd, Voeding, Hoeveelheid, Uitzonderingen FROM VoedingSchema";
+
+            using (SqlConnection connection = new SqlConnection(connectionstring))
+            using (SqlCommand command = new SqlCommand(query, connection))
+            {
+                connection.Open();
+
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        VoedingSchema voeding = new VoedingSchema(
+                            reader.GetInt32(0),
+                            reader.GetString(1),
+                            reader.GetString(2),
+                            reader.GetString(3),
+                            reader.IsDBNull(4) ? null : reader.GetString(4)
+                        );
+
+                        voedingen.Add(voeding);
+                    }
+                }
+            }
+
+            return voedingen;
+        }
+
 
     }
 }
