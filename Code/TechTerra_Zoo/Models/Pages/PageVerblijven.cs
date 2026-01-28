@@ -21,8 +21,8 @@ namespace TechTerra_Zoo.Models.Pages
             {
                 Console.Clear();
                 Console.WriteLine("=== Verblijf ===\n");
-                Console.WriteLine("1. ");
-                Console.WriteLine("2. ");
+                Console.WriteLine("1. Verblijf Toevoegen");
+                Console.WriteLine("2. Overzicht");
                 Console.WriteLine("\nDruk op ESC om terug te gaan...");
 
                 var key = Console.ReadKey(true).Key;
@@ -31,10 +31,12 @@ namespace TechTerra_Zoo.Models.Pages
                 {
                     case ConsoleKey.D1:
                     case ConsoleKey.NumPad1:
+                        new PageVerblijfToevoegen(this).Show();
                         break;
 
                     case ConsoleKey.D2:
                     case ConsoleKey.NumPad2:
+                        new PageVerblijfOverzicht(this).Show();
                         break;
 
                     case ConsoleKey.Escape:
