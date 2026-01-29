@@ -36,5 +36,11 @@ namespace TechTerra_Zoo.DataAccess
         {
             dal.DeleteDier(id);
         }
+
+        public void Update(Dier dier)
+        {
+            dal.UpdateDier(dier);
+        }
+
     }
 }

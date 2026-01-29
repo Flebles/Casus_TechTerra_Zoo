@@ -187,6 +187,34 @@ namespace TechTerra_Zoo.DataAccess
             );
         }
 
+        public void UpdateDier(Dier dier)
+        {
+            string query = @"
+                UPDATE Dier
+                SET 
+                    Naam = @naam,
+                    Soort = @soort,
+                    Opmerking = @opmerking
+                WHERE Id = @id
+            ";
+
+            using SqlConnection connection = new SqlConnection(connectionstring);
+            using SqlCommand command = new SqlCommand(query, connection);
+
+            command.Parameters.AddWithValue("@id", dier.Id);
+            command.Parameters.AddWithValue("@naam", dier.Naam);
+            command.Parameters.AddWithValue("@soort", dier.Soort);
+            command.Parameters.AddWithValue(
+                "@opmerking",
+                dier.Opmerking ?? string.Empty
+            );
+
+            connection.Open();
+            int rows = command.ExecuteNonQuery();
+            Console.WriteLine($"Aangepaste rijen: {rows}");
+            Console.ReadKey();
+        }
+
         public void DeleteDier(int id)
         {
             string query = "DELETE FROM Dier WHERE Id = @id";

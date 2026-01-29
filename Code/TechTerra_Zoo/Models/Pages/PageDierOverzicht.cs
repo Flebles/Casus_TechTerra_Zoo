@@ -38,11 +38,30 @@ namespace TechTerra_Zoo.Models.Pages
                     Console.WriteLine($"Opmerking: {v.Opmerking}");
                 }
             }
+            Console.Write("\nVul het nummer van het dier in dat je wilt aanpassen: ");
+            string input = Console.ReadLine();
 
-            Console.WriteLine("\nDruk op ESC om terug te gaan...");
-            while (Console.ReadKey(true).Key != ConsoleKey.Escape) { }
+            if (!int.TryParse(input, out int dierId))
+            {
+                Console.WriteLine("Ongeldige invoer.");
+                Console.ReadKey();
+                Show();
+                return;
+            }
 
-            _returnPage.Show();
+            Dier gekozenDier = dieren.FirstOrDefault(d => d.Id == dierId);
+
+            if (gekozenDier == null)
+            {
+                Console.WriteLine("Geen dier gevonden met dit nummer.");
+                Console.ReadKey();
+                Show();
+                return;
+            }
+
+            PageDierMenu dierMenu = new PageDierMenu(gekozenDier, this);
+            dierMenu.Show();
+
         }
     }
 }
