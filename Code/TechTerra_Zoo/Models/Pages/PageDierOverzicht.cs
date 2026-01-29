@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TechTerra_Zoo.DataAccess;
 
 namespace TechTerra_Zoo.Models.Pages
 {
@@ -17,36 +18,30 @@ namespace TechTerra_Zoo.Models.Pages
 
         public void Show()
         {
-            while (true)
+            Console.Clear();
+            Console.WriteLine("=== Dieren Overzicht ===\n");
+            DierRepository repo = new DierRepository();
+            List<Dier> dieren = repo.GetAllDieren();
+
+            if (dieren.Count == 0)
             {
-                Console.Clear();
-                Console.WriteLine("=== Dieren Overzicht ===\n");
-                Console.WriteLine("1. ");
-                Console.WriteLine("2. ");
-                Console.WriteLine("3. ");
-                Console.WriteLine("\nDruk op ESC om terug te gaan...");
-
-                var key = Console.ReadKey(true).Key;
-
-                switch (key)
+                Console.WriteLine("Geen dieren gevonden.");
+            }
+            else
+            {
+                foreach (var v in dieren)
                 {
-                    case ConsoleKey.D1:
-                    case ConsoleKey.NumPad1:
-                        break;
-
-                    case ConsoleKey.D2:
-                    case ConsoleKey.NumPad2:
-                        break;
-
-                    case ConsoleKey.D3:
-                    case ConsoleKey.NumPad3:
-                        break;
-
-                    case ConsoleKey.Escape:
-                        _returnPage.Show();
-                        return;
+                    Console.WriteLine("--------------");
+                    Console.WriteLine($"Diernummer: {v.Id}");
+                    Console.WriteLine($"Naam: {v.Naam}");
+                    Console.WriteLine($"Soort: {v.Soort}");
                 }
             }
+
+            Console.WriteLine("\nDruk op ESC om terug te gaan...");
+            while (Console.ReadKey(true).Key != ConsoleKey.Escape) { }
+
+            _returnPage.Show();
         }
     }
 }

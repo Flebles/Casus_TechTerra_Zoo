@@ -8,14 +8,14 @@ namespace TechTerra_Zoo.Models
 {
     internal class Olifant : Dier
     {
-        public Olifant(int id, string naam, string geluid, int aantalPoten, bool heeftVacht)
-            : base(id, naam, geluid, aantalPoten, heeftVacht)
+        public Olifant(int id, string naam, string soort)
+            : base(id, naam, soort)
         {
         }
 
         public override string Eet()
         {
-            return $"{naam} eet planten en fruit.";
+            return $"{Naam} eet planten en fruit.";
         }
     }
 }

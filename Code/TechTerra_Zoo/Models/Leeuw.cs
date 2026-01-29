@@ -8,14 +8,14 @@ namespace TechTerra_Zoo.Models
 {
     internal class Leeuw : Dier
     {
-        public Leeuw(int id, string naam, string geluid, int aantalPoten, bool heeftVacht)
-            : base(id, naam, geluid, aantalPoten, heeftVacht)
+        public Leeuw(int id, string naam, string soort)
+            : base(id, naam, soort)
         {
         }
 
         public override string Eet()
         {
-            return $"{naam} eet vlees.";
+            return $"{Naam} eet vlees.";
         }
     }
 }

@@ -6,42 +6,23 @@ using System.Threading.Tasks;
 
 namespace TechTerra_Zoo.Models
 {
-    internal abstract class Dier
+    public class Dier
     {
-        protected int id;
-        protected string naam;
-        protected string geluid;
-        protected bool heeftVacht;
+        public int Id { get; protected set; }
+        public string Naam { get; protected set; }
+        public string Soort { get; protected set; }
 
-        public int AantalPoten { get; protected set; }
-        public string Naam => naam;
-        public string Geluid => geluid;
-        public bool HeeftVacht => heeftVacht;
-
-        protected Dier(int id, string naam, string geluid, int aantalPoten, bool heeftVacht)
+        public Dier(int id, string naam, string soort)
         {
-            this.id = id;
-            this.naam = naam;
-            this.geluid = geluid;
-            this.AantalPoten = aantalPoten;
-            this.heeftVacht = heeftVacht;
-        }
-
-        public virtual string MaakGeluid()
-        {
-            return $"{naam} maakt het geluid: {geluid}";
+            Id = id;
+            Naam = naam;
+            Soort = soort;
         }
 
         public virtual string Eet()
         {
-            return $"{naam} eet zijn voer.";
+            return $"{Naam} eet zijn voer.";
         }
-
-        public override string ToString()
-        {
-            return $"Dier #{id} - {naam} ({AantalPoten} poten)";
-        }
-
     }
 
 }

@@ -18,8 +18,7 @@ namespace TechTerra_Zoo.Models.Pages
         public void Show()
         {
             Console.Clear();
-            Console.WriteLine("=== Overzicht verblijven ===\n");
-
+            Console.WriteLine("=== Verblijven Overzicht ===\n");
             Verblijf verblijf = new Verblijf();
             List<Verblijf> verblijven = verblijf.GetAllVerblijven();
 

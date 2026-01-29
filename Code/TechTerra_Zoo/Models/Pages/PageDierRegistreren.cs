@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TechTerra_Zoo.DataAccess;
 
 namespace TechTerra_Zoo.Models.Pages
 {
@@ -17,36 +18,32 @@ namespace TechTerra_Zoo.Models.Pages
 
         public void Show()
         {
-            while (true)
-            {
-                Console.Clear();
-                Console.WriteLine("=== Dier Registreren ===\n");
-                Console.WriteLine("1. ");
-                Console.WriteLine("2. ");
-                Console.WriteLine("3. ");
-                Console.WriteLine("\nDruk op ESC om terug te gaan...");
+            Console.Clear();
+            Console.WriteLine("=== Dier toevoegen ===\n");
 
-                var key = Console.ReadKey(true).Key;
+            Console.Write("Voer de naam van het dier in: ");
+            string? dierNaamInput = Console.ReadLine();
+            string dierNaam = dierNaamInput ?? string.Empty;
 
-                switch (key)
-                {
-                    case ConsoleKey.D1:
-                    case ConsoleKey.NumPad1:
-                        break;
+            Console.Write("Wat voor soort is het dier? ");
+            string? dierSoortInput = Console.ReadLine();
+            string dierSoort = dierSoortInput ?? string.Empty;
 
-                    case ConsoleKey.D2:
-                    case ConsoleKey.NumPad2:
-                        break;
+            Dier nieuwDier = new Dier(
+                id: 0,
+                naam: dierNaam,
+                soort: dierSoort
+            );
 
-                    case ConsoleKey.D3:
-                    case ConsoleKey.NumPad3:
-                        break;
+            DierRepository repo = new DierRepository();
+            repo.VoegDierToe(nieuwDier);
 
-                    case ConsoleKey.Escape:
-                        _returnPage.Show();
-                        return;
-                }
-            }
+            Console.WriteLine($"\n=== Dier succesvol toegevoegd ===");
+            Console.WriteLine("Druk op ESC om terug te gaan...");
+
+            while (Console.ReadKey(true).Key != ConsoleKey.Escape) { }
+
+            _returnPage.Show();
         }
     }
 }

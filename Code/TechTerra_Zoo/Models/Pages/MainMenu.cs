@@ -10,7 +10,8 @@ namespace TechTerra_Zoo.Models.Pages
     {
         public void Show()
         {
-            while (true)
+            bool doorgaan = true;
+            while (doorgaan)
             {
                 Console.Clear();
                 Console.WriteLine("=== TechTerra Zoo ===\n");
@@ -24,21 +25,29 @@ namespace TechTerra_Zoo.Models.Pages
                     case ConsoleKey.D1:
                     case ConsoleKey.NumPad1:
                         new PageDieren(this).Show();
-                        return;
+                        doorgaan = false;
+                        break;
 
                     case ConsoleKey.D2:
                     case ConsoleKey.NumPad2:
                         new PageVerblijven(this).Show();
-                        return;
+                        doorgaan = false;
+                        break;
 
                     case ConsoleKey.D3:
                     case ConsoleKey.NumPad3:
                         new PageVerzorgers(this).Show();
-                        return;
+                        doorgaan = false;
+                        break;
 
                     case ConsoleKey.D4:
                     case ConsoleKey.NumPad4:
+                        Console.WriteLine("\nProgramma wordt afgesloten.");
                         Environment.Exit(0);
+                        break;
+                    default:
+                        Console.WriteLine("\nOngeldige keuze, probeer opnieuw...");
+                        Thread.Sleep(1500);
                         break;
                 }
             }

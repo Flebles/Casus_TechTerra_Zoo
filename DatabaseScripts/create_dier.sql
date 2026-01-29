@@ -1,9 +1,7 @@
 CREATE TABLE Dier (
     Id INT IDENTITY(1,1) PRIMARY KEY,
     Naam NVARCHAR(100) NOT NULL,
-    Geluid NVARCHAR(50) NOT NULL,
-    AantalPoten INT NOT NULL,
-    HeeftVacht BIT NOT NULL
+    Soort NVARCHAR(50) NOT NULL,
 );
 
 SELECT * FROM Dier;

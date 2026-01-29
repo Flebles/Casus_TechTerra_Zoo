@@ -8,7 +8,7 @@ using TechTerra_Zoo.DataAccess.Interfaces;
 
 namespace TechTerra_Zoo.DataAccess
 {
-    internal class DierRepository
+    public class DierRepository
     {
         private DALSQL dal;
 

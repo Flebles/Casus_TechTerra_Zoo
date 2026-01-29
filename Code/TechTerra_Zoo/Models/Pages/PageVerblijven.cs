@@ -17,10 +17,11 @@ namespace TechTerra_Zoo.Models.Pages
 
         public void Show()
         {
-            while (true)
+            bool doorgaan = true;
+            while (doorgaan)
             {
                 Console.Clear();
-                Console.WriteLine("=== Verblijf ===\n");
+                Console.WriteLine("=== Verblijven ===\n");
                 Console.WriteLine("1. Verblijf Toevoegen");
                 Console.WriteLine("2. Overzicht");
                 Console.WriteLine("\nDruk op ESC om terug te gaan...");
@@ -32,16 +33,23 @@ namespace TechTerra_Zoo.Models.Pages
                     case ConsoleKey.D1:
                     case ConsoleKey.NumPad1:
                         new PageVerblijfToevoegen(this).Show();
+                        doorgaan = false;
                         break;
 
                     case ConsoleKey.D2:
                     case ConsoleKey.NumPad2:
                         new PageVerblijfOverzicht(this).Show();
+                        doorgaan = false;
                         break;
 
                     case ConsoleKey.Escape:
                         _returnPage.Show();
-                        return;
+                        doorgaan = false;
+                        break;
+                    default:
+                        Console.WriteLine("\nOngeldige keuze, probeer opnieuw...");
+                        Thread.Sleep(1500);
+                        break;
                 }
             }
         }

@@ -18,7 +18,7 @@ namespace TechTerra_Zoo.Models.Pages
         public void Show()
         {
             Console.Clear();
-            Console.WriteLine("=== Verblijf toevoegen ===\n");
+            Console.WriteLine("=== Verblijf Toevoegen ===\n");
 
             Console.Write("Voer de verblijfnaam in: ");
             string verblijfNaam = Console.ReadLine();

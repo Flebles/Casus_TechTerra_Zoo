@@ -69,18 +69,32 @@ namespace TechTerra_Zoo.DataAccess
                     (
                         Id INT IDENTITY(1,1) PRIMARY KEY,
                         Naam NVARCHAR(100) NOT NULL,
-                        Geluid NVARCHAR(100) NOT NULL,
-                        AantalPoten INT NOT NULL,
-                        HeeftVacht BIT NOT NULL
+                        Soort NVARCHAR(100) NOT NULL,
                     )
-                    
+                END
+
+                IF NOT EXISTS (
+                        SELECT * 
+                        FROM sys.objects 
+                        WHERE object_id = OBJECT_ID(N'[dbo].[Verblijf]')
+                          AND type = N'U'
+                    )
+                BEGIN
                     CREATE TABLE Verblijf
                     (
                         Id INT IDENTITY(1,1) PRIMARY KEY,
                         verblijfNaam NVARCHAR(100) NOT NULL,
                         Capaciteit INT NOT NULL,
                     )
+                END
 
+                IF NOT EXISTS (
+                        SELECT * 
+                        FROM sys.objects 
+                        WHERE object_id = OBJECT_ID(N'[dbo].[VoedingSchema]')
+                          AND type = N'U'
+                    )
+                BEGIN
                     CREATE TABLE VoedingSchema
                     (
                         Id INT IDENTITY(1,1) PRIMARY KEY,
@@ -101,21 +115,22 @@ namespace TechTerra_Zoo.DataAccess
 
         public void AddDier(Dier dier)
         {
-            string query = @"
-                INSERT INTO Dier (Naam, Geluid, AantalPoten, HeeftVacht)
-                VALUES (@Naam, @Geluid, @AantalPoten, @HeeftVacht);
-            ";
+            using (SqlConnection connection = new SqlConnection(connectionstring))
+            {
+                string query = @"
+                    INSERT INTO Dier (Naam, Soort)
+                    VALUES (@Naam, @Soort);
+                ";
 
-            using SqlConnection connection = new SqlConnection(connectionstring);
-            using SqlCommand command = new SqlCommand(query, connection);
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@Naam", dier.Naam);
+                    command.Parameters.AddWithValue("@Soort", dier.Soort);
 
-            command.Parameters.AddWithValue("@Naam", dier.Naam);
-            command.Parameters.AddWithValue("@Geluid", dier.Geluid);
-            command.Parameters.AddWithValue("@AantalPoten", dier.AantalPoten);
-            command.Parameters.AddWithValue("@HeeftVacht", dier.HeeftVacht);
-
-            connection.Open();
-            command.ExecuteNonQuery();
+                    connection.Open();
+                    command.ExecuteNonQuery();
+                }
+            }
         }
 
         public List<Dier> GetAllDieren()
@@ -123,7 +138,7 @@ namespace TechTerra_Zoo.DataAccess
             List<Dier> dieren = new List<Dier>();
 
             string query = @"
-                SELECT Id, Naam, Geluid, AantalPoten, HeeftVacht
+                SELECT Id, Naam, Soort
                 FROM Dier;
             ";
 
@@ -137,17 +152,15 @@ namespace TechTerra_Zoo.DataAccess
             {
                 int id = (int)reader["Id"];
                 string naam = reader["Naam"].ToString();
-                string geluid = reader["Geluid"].ToString();
-                int aantalPoten = (int)reader["AantalPoten"];
-                bool heeftVacht = (bool)reader["HeeftVacht"];
+                string soort = reader["Soort"].ToString();
 
-                // Tijdelijk: alles als Leeuw
-                Dier dier = new Leeuw(id, naam, geluid, aantalPoten, heeftVacht);
+                Dier dier = new Dier(id, naam, soort);
                 dieren.Add(dier);
             }
 
             return dieren;
         }
+
         public void AddVerblijf(Verblijf verblijf)
         {
             using (SqlConnection connection = new SqlConnection(connectionstring))

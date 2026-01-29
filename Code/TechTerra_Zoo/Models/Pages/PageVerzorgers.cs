@@ -17,7 +17,8 @@ namespace TechTerra_Zoo.Models.Pages
 
         public void Show()
         {
-            while (true)
+            bool doorgaan = true;
+            while (doorgaan)
             {
                 Console.Clear();
                 Console.WriteLine("=== Verzorgers ===\n");
@@ -31,15 +32,18 @@ namespace TechTerra_Zoo.Models.Pages
                 {
                     case ConsoleKey.D1:
                     case ConsoleKey.NumPad1:
+                        doorgaan = false;
                         break;
 
                     case ConsoleKey.D2:
                     case ConsoleKey.NumPad2:
+                        doorgaan = false;
                         break;
 
                     case ConsoleKey.Escape:
                         _returnPage.Show();
-                        return;
+                        doorgaan = false;
+                        break;
                 }
             }
         }
