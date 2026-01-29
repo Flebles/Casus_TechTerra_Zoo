@@ -21,10 +21,20 @@ namespace TechTerra_Zoo.DataAccess
         {
             dal.AddDier(dier);
         }
-        
+
         public List<Dier> GetAllDieren()
         {
             return dal.GetAllDieren();
+        }
+
+        public Dier? GetById(int id)
+        {
+            return dal.GetDierById(id);
+        }
+
+        public void Delete(int id)
+        {
+            dal.DeleteDier(id);
         }
     }
 }

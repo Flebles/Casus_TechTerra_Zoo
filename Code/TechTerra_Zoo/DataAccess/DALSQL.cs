@@ -70,6 +70,7 @@ namespace TechTerra_Zoo.DataAccess
                         Id INT IDENTITY(1,1) PRIMARY KEY,
                         Naam NVARCHAR(100) NOT NULL,
                         Soort NVARCHAR(100) NOT NULL,
+                        Opmerking NVARCHAR(250) NOT NULL,
                     )
                 END
 
@@ -118,14 +119,15 @@ namespace TechTerra_Zoo.DataAccess
             using (SqlConnection connection = new SqlConnection(connectionstring))
             {
                 string query = @"
-                    INSERT INTO Dier (Naam, Soort)
-                    VALUES (@Naam, @Soort);
+                    INSERT INTO Dier (Naam, Soort, Opmerking)
+                    VALUES (@Naam, @Soort, @Opmerking);
                 ";
 
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
                     command.Parameters.AddWithValue("@Naam", dier.Naam);
                     command.Parameters.AddWithValue("@Soort", dier.Soort);
+                    command.Parameters.AddWithValue("@Opmerking", dier.Opmerking ?? string.Empty);
 
                     connection.Open();
                     command.ExecuteNonQuery();
@@ -138,7 +140,7 @@ namespace TechTerra_Zoo.DataAccess
             List<Dier> dieren = new List<Dier>();
 
             string query = @"
-                SELECT Id, Naam, Soort
+                SELECT Id, Naam, Soort, Opmerking
                 FROM Dier;
             ";
 
@@ -153,12 +155,49 @@ namespace TechTerra_Zoo.DataAccess
                 int id = (int)reader["Id"];
                 string naam = reader["Naam"].ToString();
                 string soort = reader["Soort"].ToString();
+                string opmerking = reader["Opmerking"].ToString();
 
-                Dier dier = new Dier(id, naam, soort);
+                Dier dier = new Dier(id, naam, soort, opmerking);
                 dieren.Add(dier);
             }
 
             return dieren;
+        }
+
+        public Dier? GetDierById(int id)
+        {
+            string query = "SELECT Id, Naam, Soort, Opmerking FROM Dier WHERE Id = @id";
+
+            using SqlConnection connection = new SqlConnection(connectionstring);
+            using SqlCommand command = new SqlCommand(query, connection);
+
+            command.Parameters.AddWithValue("@id", id);
+
+            connection.Open();
+            using SqlDataReader reader = command.ExecuteReader();
+
+            if (!reader.Read())
+                return null;
+
+            return new Dier(
+                reader.GetInt32(0),
+                reader.GetString(1),
+                reader.GetString(2),
+                reader.GetString(3)
+            );
+        }
+
+        public void DeleteDier(int id)
+        {
+            string query = "DELETE FROM Dier WHERE Id = @id";
+
+            using SqlConnection connection = new SqlConnection(connectionstring);
+            using SqlCommand command = new SqlCommand(query, connection);
+
+            command.Parameters.AddWithValue("@id", id);
+
+            connection.Open();
+            command.ExecuteNonQuery();
         }
 
         public void AddVerblijf(Verblijf verblijf)

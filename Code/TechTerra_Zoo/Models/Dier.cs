@@ -11,12 +11,14 @@ namespace TechTerra_Zoo.Models
         public int Id { get; protected set; }
         public string Naam { get; protected set; }
         public string Soort { get; protected set; }
+        public string Opmerking { get; protected set; }
 
-        public Dier(int id, string naam, string soort)
+        public Dier(int id, string naam, string soort, string opmerking)
         {
             Id = id;
             Naam = naam;
             Soort = soort;
+            Opmerking = opmerking;
         }
 
         public virtual string Eet()

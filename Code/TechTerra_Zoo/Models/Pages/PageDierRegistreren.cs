@@ -29,10 +29,15 @@ namespace TechTerra_Zoo.Models.Pages
             string? dierSoortInput = Console.ReadLine();
             string dierSoort = dierSoortInput ?? string.Empty;
 
+            Console.Write("Voeg eventuele opmerkingen toe: ");
+            string? dierOpmerkingInput = Console.ReadLine();
+            string dierOpmerking = dierOpmerkingInput ?? string.Empty;
+
             Dier nieuwDier = new Dier(
                 id: 0,
                 naam: dierNaam,
-                soort: dierSoort
+                soort: dierSoort,
+                opmerking: dierOpmerking
             );
 
             DierRepository repo = new DierRepository();

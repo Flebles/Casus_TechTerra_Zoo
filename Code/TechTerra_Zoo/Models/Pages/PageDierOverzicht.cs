@@ -32,9 +32,10 @@ namespace TechTerra_Zoo.Models.Pages
                 foreach (var v in dieren)
                 {
                     Console.WriteLine("--------------");
-                    Console.WriteLine($"Diernummer: {v.Id}");
+                    Console.WriteLine($"{v.Id}.");
                     Console.WriteLine($"Naam: {v.Naam}");
                     Console.WriteLine($"Soort: {v.Soort}");
+                    Console.WriteLine($"Opmerking: {v.Opmerking}");
                 }
             }
 

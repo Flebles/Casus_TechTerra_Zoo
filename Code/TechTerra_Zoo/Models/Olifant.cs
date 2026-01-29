@@ -8,8 +8,8 @@ namespace TechTerra_Zoo.Models
 {
     internal class Olifant : Dier
     {
-        public Olifant(int id, string naam, string soort)
-            : base(id, naam, soort)
+        public Olifant(int id, string naam, string soort, string opmerking)
+            : base(id, naam, soort, opmerking)
         {
         }
 

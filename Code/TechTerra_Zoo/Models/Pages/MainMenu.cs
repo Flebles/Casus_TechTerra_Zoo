@@ -42,6 +42,7 @@ namespace TechTerra_Zoo.Models.Pages
 
                     case ConsoleKey.D4:
                     case ConsoleKey.NumPad4:
+                    case ConsoleKey.Escape:
                         Console.WriteLine("\nProgramma wordt afgesloten.");
                         Environment.Exit(0);
                         break;

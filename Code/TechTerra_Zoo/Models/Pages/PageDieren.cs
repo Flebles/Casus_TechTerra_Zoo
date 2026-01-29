@@ -24,6 +24,7 @@ namespace TechTerra_Zoo.Models.Pages
                 Console.WriteLine("=== Dieren ===\n");
                 Console.WriteLine("1. Dier Registreren");
                 Console.WriteLine("2. Overzicht");
+                Console.WriteLine("3. Dier Verwijderen");
                 Console.WriteLine("\nDruk op ESC om terug te gaan...");
 
                 var key = Console.ReadKey(true).Key;
@@ -39,6 +40,12 @@ namespace TechTerra_Zoo.Models.Pages
                     case ConsoleKey.D2:
                     case ConsoleKey.NumPad2:
                         new PageDierOverzicht(this).Show();
+                        doorgaan = false;
+                        break;
+
+                    case ConsoleKey.D3:
+                    case ConsoleKey.NumPad3:
+                        new PageDierVerwijderen(this).Show();
                         doorgaan = false;
                         break;
 
