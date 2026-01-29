@@ -25,6 +25,9 @@ namespace TechTerra_Zoo.Models
         {
             return $"{Naam} eet zijn voer.";
         }
-    }
 
+        public void WijzigNaam(string naam) => Naam = naam;
+        public void WijzigSoort(string soort) => Soort = soort;
+        public void WijzigOpmerking(string opmerking) => Opmerking = opmerking;
+    }
 }
