@@ -28,13 +28,15 @@ namespace TechTerra_Zoo.Models.Pages
                 Console.WriteLine("--------------");
                 Console.WriteLine($"Naam: {_dier.Naam}");
                 Console.WriteLine($"Soort: {_dier.Soort}");
+                Console.WriteLine($"Geboortedatum: {(_dier.Geboortedatum?.ToString("dd-MM-yyyy") ?? "Onbekend")}");
                 Console.WriteLine($"Opmerking: {_dier.Opmerking}");
                 Console.WriteLine("--------------\n");
 
                 Console.WriteLine("1. Naam aanpassen");
                 Console.WriteLine("2. Soort aanpassen");
-                Console.WriteLine("3. Opmerking aanpassen");
-                Console.WriteLine("4. Dier verwijderen");
+                Console.WriteLine("3. Geboortedatum aanpassen");
+                Console.WriteLine("4. Opmerking aanpassen");
+                Console.WriteLine("5. Dier verwijderen");
                 Console.WriteLine("\nS. Opslaan");
                 Console.WriteLine("ESC. Terug");
 
@@ -43,21 +45,52 @@ namespace TechTerra_Zoo.Models.Pages
                 switch (key)
                 {
                     case ConsoleKey.D1:
+                    case ConsoleKey.NumPad1:
                         Console.Write("Nieuwe naam: ");
                         _dier.WijzigNaam(Console.ReadLine());
                         break;
 
                     case ConsoleKey.D2:
+                    case ConsoleKey.NumPad2:
                         Console.Write("Nieuwe soort: ");
                         _dier.WijzigSoort(Console.ReadLine());
                         break;
 
                     case ConsoleKey.D3:
+                    case ConsoleKey.NumPad3:
+                        Console.Write("Nieuwe geboortedatum (dd-MM-yyyy, leeg = onbekend): ");
+                        string input = Console.ReadLine();
+
+                        DateTime? nieuweDatum = null;
+
+                        if (!string.IsNullOrWhiteSpace(input))
+                        {
+                            if (!DateTime.TryParseExact(
+                                input,
+                                "dd-MM-yyyy",
+                                null,
+                                System.Globalization.DateTimeStyles.None,
+                                out DateTime parsed))
+                            {
+                                Console.WriteLine("Ongeldig formaat.");
+                                Console.ReadKey();
+                                return;
+                            }
+
+                            nieuweDatum = parsed;
+                        }
+
+                        _dier.WijzigDatum(nieuweDatum);
+                        break;
+
+                    case ConsoleKey.D4:
+                    case ConsoleKey.NumPad4:
                         Console.Write("Nieuwe opmerking: ");
                         _dier.WijzigOpmerking(Console.ReadLine());
                         break;
 
-                    case ConsoleKey.D4:
+                    case ConsoleKey.D5:
+                    case ConsoleKey.NumPad5:
                         VerwijderDier();
                         return;
 
@@ -91,6 +124,7 @@ namespace TechTerra_Zoo.Models.Pages
             Console.WriteLine($"ID: {_dier.Id}");
             Console.WriteLine($"Naam: {_dier.Naam}");
             Console.WriteLine($"Soort: {_dier.Soort}");
+            Console.WriteLine($"Geboortedatum: {(_dier.Geboortedatum?.ToString("dd-MM-yyyy") ?? "Onbekend")}");
             Console.WriteLine($"Opmerking: {_dier.Opmerking}");
             Console.WriteLine("--------------\n");
 

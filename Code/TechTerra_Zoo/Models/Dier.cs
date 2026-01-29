@@ -12,12 +12,14 @@ namespace TechTerra_Zoo.Models
         public string Naam { get; protected set; }
         public string Soort { get; protected set; }
         public string Opmerking { get; protected set; }
+        public DateTime? Geboortedatum { get; private set; }
 
-        public Dier(int id, string naam, string soort, string opmerking)
+        public Dier(int id, string naam, string soort, DateTime? geboortedatum, string opmerking)
         {
             Id = id;
             Naam = naam;
             Soort = soort;
+            Geboortedatum = geboortedatum;
             Opmerking = opmerking;
         }
 
@@ -29,5 +31,6 @@ namespace TechTerra_Zoo.Models
         public void WijzigNaam(string naam) => Naam = naam;
         public void WijzigSoort(string soort) => Soort = soort;
         public void WijzigOpmerking(string opmerking) => Opmerking = opmerking;
+        public void WijzigDatum(DateTime? geboortedatum) => Geboortedatum = geboortedatum;
     }
 }

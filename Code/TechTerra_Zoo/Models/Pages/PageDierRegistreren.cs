@@ -29,6 +29,31 @@ namespace TechTerra_Zoo.Models.Pages
             string? dierSoortInput = Console.ReadLine();
             string dierSoort = dierSoortInput ?? string.Empty;
 
+            Console.Write("Geboortedatum (dd-MM-yyyy, leeg = onbekend): ");
+            string geboorteInput = Console.ReadLine();
+
+            DateTime? dierDatum = null;
+
+            if (!string.IsNullOrWhiteSpace(geboorteInput))
+            {
+                if (DateTime.TryParseExact(
+                    geboorteInput,
+                    "dd-MM-yyyy",
+                    null,
+                    System.Globalization.DateTimeStyles.None,
+                    out DateTime parsedDate))
+                {
+                    dierDatum = parsedDate;
+                }
+                else
+                {
+                    Console.WriteLine("Ongeldig formaat. Gebruik dd-MM-yyyy.");
+                    Console.ReadKey();
+                    _returnPage.Show();
+                    return;
+                }
+            }
+
             Console.Write("Voeg eventuele opmerkingen toe: ");
             string? dierOpmerkingInput = Console.ReadLine();
             string dierOpmerking = dierOpmerkingInput ?? string.Empty;
@@ -37,6 +62,7 @@ namespace TechTerra_Zoo.Models.Pages
                 id: 0,
                 naam: dierNaam,
                 soort: dierSoort,
+                geboortedatum: dierDatum,
                 opmerking: dierOpmerking
             );
 

@@ -25,6 +25,7 @@ namespace TechTerra_Zoo.Models.Pages
             Console.WriteLine("--------------");
             Console.WriteLine($"{_dier.Id}.");
             Console.WriteLine($"Soort: {_dier.Soort}");
+            Console.WriteLine($"Geboortedatum: {(_dier.Geboortedatum?.ToString("dd-MM-yyyy") ?? "Onbekend")}");
             Console.WriteLine($"Opmerking: {_dier.Opmerking}");
             Console.WriteLine("--------------");
 

@@ -38,6 +38,7 @@ namespace TechTerra_Zoo.Models.Pages
                         Console.WriteLine($"ID: {d.Id}");
                         Console.WriteLine($"Naam: {d.Naam}");
                         Console.WriteLine($"Soort: {d.Soort}");
+                        Console.WriteLine($"Geboortedatum: {(d.Geboortedatum?.ToString("dd-MM-yyyy") ?? "Onbekend")}");
                         Console.WriteLine($"Opmerking: {d.Opmerking}");
                     }
 

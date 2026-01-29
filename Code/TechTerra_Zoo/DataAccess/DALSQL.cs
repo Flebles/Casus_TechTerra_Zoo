@@ -70,16 +70,17 @@ namespace TechTerra_Zoo.DataAccess
                         Id INT IDENTITY(1,1) PRIMARY KEY,
                         Naam NVARCHAR(100) NOT NULL,
                         Soort NVARCHAR(100) NOT NULL,
-                        Opmerking NVARCHAR(250) NOT NULL,
+                        Geboortedatum DATE NULL,
+                        Opmerking NVARCHAR(250) NULL,
                     )
                 END
 
                 IF NOT EXISTS (
-                        SELECT * 
-                        FROM sys.objects 
-                        WHERE object_id = OBJECT_ID(N'[dbo].[Verblijf]')
-                          AND type = N'U'
-                    )
+                    SELECT * 
+                    FROM sys.objects 
+                    WHERE object_id = OBJECT_ID(N'[dbo].[Verblijf]')
+                    AND type = N'U'
+                )
                 BEGIN
                     CREATE TABLE Verblijf
                     (
@@ -90,11 +91,11 @@ namespace TechTerra_Zoo.DataAccess
                 END
 
                 IF NOT EXISTS (
-                        SELECT * 
-                        FROM sys.objects 
-                        WHERE object_id = OBJECT_ID(N'[dbo].[VoedingSchema]')
-                          AND type = N'U'
-                    )
+                    SELECT * 
+                    FROM sys.objects 
+                    WHERE object_id = OBJECT_ID(N'[dbo].[VoedingSchema]')
+                    AND type = N'U'
+                )
                 BEGIN
                     CREATE TABLE VoedingSchema
                     (
@@ -119,14 +120,15 @@ namespace TechTerra_Zoo.DataAccess
             using (SqlConnection connection = new SqlConnection(connectionstring))
             {
                 string query = @"
-                    INSERT INTO Dier (Naam, Soort, Opmerking)
-                    VALUES (@Naam, @Soort, @Opmerking);
+                    INSERT INTO Dier (Naam, Soort, Geboortedatum, Opmerking)
+                    VALUES (@Naam, @Soort, @Geboortedatum, @Opmerking);
                 ";
 
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
                     command.Parameters.AddWithValue("@Naam", dier.Naam);
                     command.Parameters.AddWithValue("@Soort", dier.Soort);
+                    command.Parameters.AddWithValue("@Geboortedatum", dier.Geboortedatum);
                     command.Parameters.AddWithValue("@Opmerking", dier.Opmerking ?? string.Empty);
 
                     connection.Open();
@@ -140,7 +142,7 @@ namespace TechTerra_Zoo.DataAccess
             List<Dier> dieren = new List<Dier>();
 
             string query = @"
-                SELECT Id, Naam, Soort, Opmerking
+                SELECT Id, Naam, Soort, Geboortedatum, Opmerking
                 FROM Dier;
             ";
 
@@ -155,9 +157,10 @@ namespace TechTerra_Zoo.DataAccess
                 int id = (int)reader["Id"];
                 string naam = reader["Naam"].ToString();
                 string soort = reader["Soort"].ToString();
+                DateTime? geboortedatum = reader["Geboortedatum"] == DBNull.Value ? null : (DateTime)reader["Geboortedatum"]; // geen flauw idee waarom dit werkt dus niet aanraken
                 string opmerking = reader["Opmerking"].ToString();
 
-                Dier dier = new Dier(id, naam, soort, opmerking);
+                Dier dier = new Dier(id, naam, soort, geboortedatum, opmerking);
                 dieren.Add(dier);
             }
 
@@ -166,7 +169,7 @@ namespace TechTerra_Zoo.DataAccess
 
         public Dier? GetDierById(int id)
         {
-            string query = "SELECT Id, Naam, Soort, Opmerking FROM Dier WHERE Id = @id";
+            string query = "SELECT Id, Naam, Soort, Geboortedatum, Opmerking FROM Dier WHERE Id = @id";
 
             using SqlConnection connection = new SqlConnection(connectionstring);
             using SqlCommand command = new SqlCommand(query, connection);
@@ -183,7 +186,8 @@ namespace TechTerra_Zoo.DataAccess
                 reader.GetInt32(0),
                 reader.GetString(1),
                 reader.GetString(2),
-                reader.GetString(3)
+                reader.GetDateTime(3),
+                reader.GetString(4)
             );
         }
 
@@ -194,6 +198,7 @@ namespace TechTerra_Zoo.DataAccess
                 SET 
                     Naam = @naam,
                     Soort = @soort,
+                    Geboortedatum = @geboortedatum,
                     Opmerking = @opmerking
                 WHERE Id = @id
             ";
@@ -204,10 +209,8 @@ namespace TechTerra_Zoo.DataAccess
             command.Parameters.AddWithValue("@id", dier.Id);
             command.Parameters.AddWithValue("@naam", dier.Naam);
             command.Parameters.AddWithValue("@soort", dier.Soort);
-            command.Parameters.AddWithValue(
-                "@opmerking",
-                dier.Opmerking ?? string.Empty
-            );
+            command.Parameters.AddWithValue("@geboortedatum", dier.Geboortedatum);
+            command.Parameters.AddWithValue("@opmerking", dier.Opmerking ?? string.Empty);
 
             connection.Open();
             int rows = command.ExecuteNonQuery();
