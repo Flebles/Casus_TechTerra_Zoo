@@ -62,7 +62,6 @@ namespace TechTerra_Zoo.Models.Pages
 
                         Console.WriteLine("Druk op een toets om terug te gaan");
                         Console.ReadKey();
-                        doorgaan = false;
                         break;
 
                     case ConsoleKey.D2:
