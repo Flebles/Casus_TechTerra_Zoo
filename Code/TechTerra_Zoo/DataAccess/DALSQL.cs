@@ -246,7 +246,7 @@ namespace TechTerra_Zoo.DataAccess
             command.Parameters.AddWithValue("@id", dier.Id);
             command.Parameters.AddWithValue("@naam", dier.Naam);
             command.Parameters.AddWithValue("@soort", dier.Soort);
-            command.Parameters.AddWithValue("@Geboortedatum", dier.Geboortedatum ?? (object)DBNull.Value); // geen flauw idee waarom dit werkt dus niet aanraken
+            command.Parameters.AddWithValue("@geboortedatum", dier.Geboortedatum ?? (object)DBNull.Value); // geen flauw idee waarom dit werkt dus niet aanraken
             command.Parameters.AddWithValue("@opmerking", dier.Opmerking ?? string.Empty);
 
             connection.Open();
