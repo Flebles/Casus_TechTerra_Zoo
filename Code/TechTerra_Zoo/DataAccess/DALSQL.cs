@@ -139,25 +139,24 @@ namespace TechTerra_Zoo.DataAccess
 
         public void AddDier(Dier dier)
         {
-            using (SqlConnection connection = new SqlConnection(connectionstring))
-            {
-                string query = @"
-                    INSERT INTO Dier (Naam, Soort, Geboortedatum, Opmerking)
-                    VALUES (@Naam, @Soort, @Geboortedatum, @Opmerking);
-                ";
+            using SqlConnection connection = new SqlConnection(connectionstring);
 
-                using (SqlCommand command = new SqlCommand(query, connection))
-                {
-                    command.Parameters.AddWithValue("@Naam", dier.Naam);
-                    command.Parameters.AddWithValue("@Soort", dier.Soort);
-                    command.Parameters.AddWithValue("@Geboortedatum", dier.Geboortedatum);
-                    command.Parameters.AddWithValue("@Opmerking", dier.Opmerking ?? string.Empty);
+            string query = @"
+                INSERT INTO Dier (Naam, Soort, Geboortedatum, Opmerking)
+                VALUES (@Naam, @Soort, @Geboortedatum, @Opmerking);
+            ";
 
-                    connection.Open();
-                    command.ExecuteNonQuery();
-                }
-            }
+            using SqlCommand command = new SqlCommand(query, connection);
+
+            command.Parameters.AddWithValue("@Naam", dier.Naam);
+            command.Parameters.AddWithValue("@Soort", dier.Soort);
+            command.Parameters.AddWithValue( "@Geboortedatum", dier.Geboortedatum ?? (object)DBNull.Value); // geen flauw idee waarom dit werkt dus niet aanraken
+            command.Parameters.AddWithValue("@Opmerking", dier.Opmerking ?? string.Empty);
+
+            connection.Open();
+            command.ExecuteNonQuery();
         }
+
 
         public List<Dier> GetAllDieren()
         {
@@ -231,13 +230,12 @@ namespace TechTerra_Zoo.DataAccess
             command.Parameters.AddWithValue("@id", dier.Id);
             command.Parameters.AddWithValue("@naam", dier.Naam);
             command.Parameters.AddWithValue("@soort", dier.Soort);
-            command.Parameters.AddWithValue("@geboortedatum", dier.Geboortedatum);
+            command.Parameters.AddWithValue("@Geboortedatum", dier.Geboortedatum ?? (object)DBNull.Value); // geen flauw idee waarom dit werkt dus niet aanraken
             command.Parameters.AddWithValue("@opmerking", dier.Opmerking ?? string.Empty);
 
             connection.Open();
             int rows = command.ExecuteNonQuery();
             Console.WriteLine($"Aangepaste rijen: {rows}");
-            Console.ReadKey();
         }
 
         public void DeleteDier(int id)

@@ -24,7 +24,7 @@ namespace TechTerra_Zoo.Models.Pages
             while (doorgaan)
             {
                 Console.Clear();
-                Console.WriteLine($"=== Bewerk dier (ID {_dier.Id}) ===\n");
+                Console.WriteLine($"=== Bewerk {_dier.Naam} ===\n");
 
                 Console.WriteLine("--------------");
                 Console.WriteLine($"Naam: {_dier.Naam}");
@@ -37,10 +37,8 @@ namespace TechTerra_Zoo.Models.Pages
                 Console.WriteLine("2. Soort aanpassen");
                 Console.WriteLine("3. Geboortedatum aanpassen");
                 Console.WriteLine("4. Opmerking aanpassen");
-                Console.WriteLine("5. Dier voeren (nu)");
-                Console.WriteLine("6. Dier verwijderen");
-                Console.WriteLine("\nS. Opslaan");
-                Console.WriteLine("ESC. Terug");
+                Console.WriteLine("S. Opslaan");
+                Console.WriteLine("\nDruk op ESC om terug te gaan...");
 
                 var key = Console.ReadKey(true).Key;
 
@@ -48,21 +46,19 @@ namespace TechTerra_Zoo.Models.Pages
                 {
                     case ConsoleKey.D1:
                     case ConsoleKey.NumPad1:
-                        Console.Write("Nieuwe naam: ");
+                        Console.Write("Vul een nieuwe naam in:\n> ");
                         _dier.WijzigNaam(Console.ReadLine());
-                        doorgaan = false;
                         break;
 
                     case ConsoleKey.D2:
                     case ConsoleKey.NumPad2:
-                        Console.Write("Nieuwe soort: ");
+                        Console.Write("Vul een nieuwe soort in:\n> ");
                         _dier.WijzigSoort(Console.ReadLine());
-                        doorgaan = false;
                         break;
 
                     case ConsoleKey.D3:
                     case ConsoleKey.NumPad3:
-                        Console.Write("Nieuwe geboortedatum (dd-MM-yyyy, leeg = onbekend): ");
+                        Console.Write("Vul een nieuwe geboortedatum in (dd-MM-yyyy, leeg = onbekend):\n> ");
                         string input = Console.ReadLine();
 
                         DateTime? nieuweDatum = null;
@@ -76,7 +72,7 @@ namespace TechTerra_Zoo.Models.Pages
                                 System.Globalization.DateTimeStyles.None,
                                 out DateTime parsed))
                             {
-                                Console.WriteLine("Ongeldig formaat.");
+                                Console.WriteLine("\nOngeldig formaat.");
                                 Console.WriteLine("Druk op een toets om terug te gaan");
                                 Console.ReadKey();
                                 return;
@@ -86,43 +82,17 @@ namespace TechTerra_Zoo.Models.Pages
                         }
 
                         _dier.WijzigDatum(nieuweDatum);
-                        doorgaan = false;
                         break;
 
                     case ConsoleKey.D4:
                     case ConsoleKey.NumPad4:
-                        Console.Write("Nieuwe opmerking: ");
+                        Console.Write("Vul een nieuwe opmerking in:\n> ");
                         _dier.WijzigOpmerking(Console.ReadLine());
-                        doorgaan = false;
-                        break;
-
-                    case ConsoleKey.D5:
-                    case ConsoleKey.NumPad5:
-                        DierRepository repo = new DierRepository();
-                        DALSQL dal = new DALSQL();
-
-                        if (dal.IsDierVandaagGevoerd(_dier.Id))
-                        {
-                            Console.WriteLine("Dit dier is vandaag al gevoerd.");
-                        }
-                        else
-                        {
-                            dal.RegistreerVoeding(_dier.Id);
-                            Console.WriteLine("Voeding geregistreerd.");
-                        }
-
-                        Console.WriteLine("Druk op een toets om terug te gaan");
-                        Console.ReadKey();
-                        doorgaan = false;
-                        break;
-
-                    case ConsoleKey.D6:
-                    case ConsoleKey.NumPad6:
-                        VerwijderDier();
                         break;
 
                     case ConsoleKey.S:
                         Opslaan();
+                        doorgaan = false;
                         break;
 
                     case ConsoleKey.Escape:
@@ -141,36 +111,6 @@ namespace TechTerra_Zoo.Models.Pages
             Console.WriteLine("Druk op een toets om terug te gaan");
             Console.ReadKey();
             _returnPage.Show();
-        }
-
-        private void VerwijderDier()
-        {
-            Console.Clear();
-            Console.WriteLine("Weet je zeker dat je dit dier wilt verwijderen?\n");
-
-            Console.WriteLine("--------------");
-            Console.WriteLine($"ID: {_dier.Id}");
-            Console.WriteLine($"Naam: {_dier.Naam}");
-            Console.WriteLine($"Soort: {_dier.Soort}");
-            Console.WriteLine($"Geboortedatum: {(_dier.Geboortedatum?.ToString("dd-MM-yyyy") ?? "Onbekend")}");
-            Console.WriteLine($"Opmerking: {_dier.Opmerking}");
-            Console.WriteLine("--------------\n");
-
-            Console.WriteLine("1. Ja, verwijderen");
-            Console.WriteLine("2. Nee, annuleren");
-
-            var key = Console.ReadKey(true).Key;
-
-            if (key == ConsoleKey.D1 || key == ConsoleKey.NumPad1)
-            {
-                DierRepository repo = new DierRepository();
-                repo.Delete(_dier.Id);
-
-                Console.WriteLine("\nDier verwijderd.");
-                Console.WriteLine("Druk op een toets om terug te gaan");
-                Console.ReadKey();
-                _returnPage.Show();
-            }
         }
     }
 }

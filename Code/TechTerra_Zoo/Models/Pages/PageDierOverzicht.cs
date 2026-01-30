@@ -37,27 +37,27 @@ namespace TechTerra_Zoo.Models.Pages
                 {
                     foreach (var d in dieren)
                     {
-                        Console.WriteLine("--------------");
-                        Console.WriteLine($"ID: {d.Id}");
-                        Console.WriteLine($"Naam: {d.Naam}");
-                        Console.WriteLine($"Soort: {d.Soort}");
-                        Console.WriteLine($"Geboortedatum: {(d.Geboortedatum?.ToString("dd-MM-yyyy") ?? "Onbekend")}");
-                        Console.WriteLine($"Opmerking: {d.Opmerking}");
+                        Console.WriteLine(">---------------------------<");
+                        Console.WriteLine($"| ID: {d.Id}");
+                        Console.WriteLine($"| Naam: {d.Naam}");
+                        Console.WriteLine($"| Soort: {d.Soort}");
+                        Console.WriteLine($"| Geboortedatum: {(d.Geboortedatum?.ToString("dd-MM-yyyy") ?? "Onbekend")}");
+                        Console.WriteLine($"| Opmerking: {d.Opmerking}");
 
                         // controleer of het dier is gevoerd en wanneer
                         bool gevoerdVandaag = dal.IsDierVandaagGevoerd(d.Id);
                         DateTime? laatsteVoeding = dal.GetLaatsteVoeding(d.Id);
 
-                        Console.WriteLine($"Gevoerd vandaag: {(gevoerdVandaag ? "JA" : "NEE")}");
-                        Console.WriteLine($"Laatste voeding: {(laatsteVoeding?.ToString("dd-MM-yyyy HH:mm") ?? "Nooit")}");
+                        Console.WriteLine($"| Gevoerd vandaag: {(gevoerdVandaag ? "JA" : "NEE")}");
+                        Console.WriteLine($"| Laatste voeding: {(laatsteVoeding?.ToString("dd-MM-yyyy HH:mm") ?? "Nooit")}");
 
                     }
 
-                    Console.WriteLine("--------------");
+                    Console.WriteLine(">----------------------------<");
                 }
 
-                Console.WriteLine("\nVoer een dier-ID in om te bewerken");
-                Console.WriteLine("Druk op ESC om terug te gaan");
+                Console.WriteLine("\nVul een dier-ID in om te bewerken");
+                Console.WriteLine("Druk op ESC om terug te gaan...");
 
                 var key = Console.ReadKey(true);
 
@@ -78,7 +78,7 @@ namespace TechTerra_Zoo.Models.Pages
                 if (gekozenDier == null)
                     continue;
 
-                new PageDierBewerken(gekozenDier, this).Show();
+                new PageDierMenu(gekozenDier, this).Show();
             }
         }
     }
