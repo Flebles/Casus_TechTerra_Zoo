@@ -1,7 +1,10 @@
-CREATE TABLE Dier (
+CREATE TABLE Dier
+(
     Id INT IDENTITY(1,1) PRIMARY KEY,
     Naam NVARCHAR(100) NOT NULL,
-    Soort NVARCHAR(50) NOT NULL,
+    Soort NVARCHAR(100) NOT NULL,
+    Geboortedatum DATE NULL,
+    Opmerking NVARCHAR(250) NULL,
 );
 
 SELECT * FROM Dier;
