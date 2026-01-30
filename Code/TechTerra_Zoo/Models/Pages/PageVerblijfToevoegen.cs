@@ -20,20 +20,28 @@ namespace TechTerra_Zoo.Models.Pages
             Console.Clear();
             Console.WriteLine("=== Verblijf Toevoegen ===\n");
 
-            Console.Write("Voer de verblijfnaam in: ");
+            Console.Write("Naam: ");
             string verblijfNaam = Console.ReadLine();
 
+            Console.Write("Type: ");
+            string type = Console.ReadLine();
+
             int capaciteit;
-            Console.Write("Voer de capaciteit in: ");
+            Console.Write("Capaciteit: ");
             while (!int.TryParse(Console.ReadLine(), out capaciteit))
-            {
                 Console.Write("Ongeldige invoer. Voer een geldig getal in: ");
-            }
+
+            int temperatuur;
+            Console.Write("Temperatuur (°C): ");
+            while (!int.TryParse(Console.ReadLine(), out temperatuur))
+                Console.Write("Ongeldige invoer. Voer een geldig getal in: ");
 
             Verblijf nieuwVerblijf = new Verblijf
             {
                 VerblijfNaam = verblijfNaam,
-                Capaciteit = capaciteit
+                Capaciteit = capaciteit,
+                Type = type,
+                Temperatuur = temperatuur
             };
 
             nieuwVerblijf.CreateVerblijf();

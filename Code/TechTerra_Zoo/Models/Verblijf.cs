@@ -12,16 +12,20 @@ namespace TechTerra_Zoo.Models
         public int Id { get; set; }
         public string VerblijfNaam { get; set; }
         public int Capaciteit { get; set; }
+        public string Type { get; set; }
+        public int Temperatuur { get; set; }
 
         public Verblijf()
         {
         }
 
-        public Verblijf(int id, string verblijfNaam, int capaciteit)
+        public Verblijf(int id, string verblijfNaam, int capaciteit, string type, int temperatuur)
         {
             Id = id;
             VerblijfNaam = verblijfNaam;
             Capaciteit = capaciteit;
+            Type = type;
+            Temperatuur = temperatuur;
         }
 
         public void CreateVerblijf()
@@ -35,5 +39,18 @@ namespace TechTerra_Zoo.Models
             DALSQL dalSql = new DALSQL();
             return dalSql.GetAllVerblijven();
         }
+
+        public static Verblijf? GetById(int id)
+        {
+            DALSQL dal = new DALSQL();
+            return dal.GetVerblijfById(id);
+        }
+
+        public static void Delete(int id)
+        {
+            DALSQL dal = new DALSQL();
+            dal.DeleteVerblijf(id);
+        }
     }
+
 }

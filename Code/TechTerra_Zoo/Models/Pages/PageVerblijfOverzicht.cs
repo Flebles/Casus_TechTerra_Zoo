@@ -31,7 +31,7 @@ namespace TechTerra_Zoo.Models.Pages
                 foreach (var v in verblijven)
                 {
                     Console.WriteLine(
-                        $"-------------- \nVerblijf: {v.Id}: \nNaam: {v.VerblijfNaam} \nCapaciteit: {v.Capaciteit}\n--------------"
+                        $"-------------- \n{v.Id}. \nVerblijfnaam: {v.VerblijfNaam} \nType: {v.Type} \nCapaciteit: {v.Capaciteit} \nTemperatuur: {v.Temperatuur}"
                     );
                 }
             }

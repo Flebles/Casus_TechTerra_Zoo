@@ -24,6 +24,7 @@ namespace TechTerra_Zoo.Models.Pages
                 Console.WriteLine("=== Verblijven ===\n");
                 Console.WriteLine("1. Verblijf Toevoegen");
                 Console.WriteLine("2. Overzicht");
+                Console.WriteLine("3. Verblijf Verwijderen");
                 Console.WriteLine("\nDruk op ESC om terug te gaan...");
 
                 var key = Console.ReadKey(true).Key;
@@ -39,6 +40,12 @@ namespace TechTerra_Zoo.Models.Pages
                     case ConsoleKey.D2:
                     case ConsoleKey.NumPad2:
                         new PageVerblijfOverzicht(this).Show();
+                        doorgaan = false;
+                        break;
+
+                    case ConsoleKey.D3:
+                    case ConsoleKey.NumPad3:
+                        new PageVerblijfVerwijderen(this).Show();
                         doorgaan = false;
                         break;
 

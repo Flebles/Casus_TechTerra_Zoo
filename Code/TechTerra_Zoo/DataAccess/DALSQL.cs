@@ -87,6 +87,8 @@ namespace TechTerra_Zoo.DataAccess
                         Id INT IDENTITY(1,1) PRIMARY KEY,
                         verblijfNaam NVARCHAR(100) NOT NULL,
                         Capaciteit INT NOT NULL,
+                        Type NVARCHAR(100) NOT NULL,
+                        Temperatuur INT NOT NULL
                     )
                 END
 
@@ -251,22 +253,6 @@ namespace TechTerra_Zoo.DataAccess
             command.ExecuteNonQuery();
         }
 
-        public void AddVerblijf(Verblijf verblijf)
-        {
-            using (SqlConnection connection = new SqlConnection(connectionstring))
-            {
-                string query = "INSERT INTO Verblijf (verblijfNaam, Capaciteit) VALUES (@verblijf, @capaciteit)";
-
-                using (SqlCommand command = new SqlCommand(query, connection))
-                {
-                    command.Parameters.AddWithValue("@verblijf", verblijf.VerblijfNaam);
-                    command.Parameters.AddWithValue("@capaciteit", verblijf.Capaciteit);
-
-                    connection.Open();
-                    command.ExecuteNonQuery();
-                }
-            }
-        }
 
         public void RegistreerVoeding(int dierId)
         {
@@ -324,33 +310,91 @@ namespace TechTerra_Zoo.DataAccess
             return result == null ? null : (DateTime)result;
         }
 
+        public void AddVerblijf(Verblijf verblijf)
+        {
+            using SqlConnection connection = new SqlConnection(connectionstring);
+
+            string query = @"INSERT INTO Verblijf 
+                    (verblijfNaam, Capaciteit, Type, Temperatuur) 
+                    VALUES (@naam, @cap, @type, @temp)";
+
+            using SqlCommand command = new SqlCommand(query, connection);
+
+            command.Parameters.AddWithValue("@naam", verblijf.VerblijfNaam);
+            command.Parameters.AddWithValue("@cap", verblijf.Capaciteit);
+            command.Parameters.AddWithValue("@type", verblijf.Type);
+            command.Parameters.AddWithValue("@temp", verblijf.Temperatuur);
+
+            connection.Open();
+            command.ExecuteNonQuery();
+        }
+
         public List<Verblijf> GetAllVerblijven()
         {
-            List<Verblijf> verblijven = new List<Verblijf>();
-            string query = "SELECT Id, verblijfNaam, Capaciteit FROM Verblijf";
+            List<Verblijf> verblijven = new();
 
-            using (SqlConnection connection = new SqlConnection(connectionstring))
-            using (SqlCommand command = new SqlCommand(query, connection))
+            string query = "SELECT Id, verblijfNaam, Capaciteit, Type, Temperatuur FROM Verblijf";
+
+            using SqlConnection connection = new SqlConnection(connectionstring);
+            using SqlCommand command = new SqlCommand(query, connection);
+
+            connection.Open();
+
+            using SqlDataReader reader = command.ExecuteReader();
+            while (reader.Read())
             {
-                connection.Open();
-
-                using (SqlDataReader reader = command.ExecuteReader())
-                {
-                    while (reader.Read())
-                    {
-                        Verblijf verblijf = new Verblijf(
-                            reader.GetInt32(0),
-                            reader.GetString(1),
-                            reader.GetInt32(2)
-                        );
-
-                        verblijven.Add(verblijf);
-                    }
-                }
+                verblijven.Add(new Verblijf(
+                    reader.GetInt32(0),
+                    reader.GetString(1),
+                    reader.GetInt32(2),
+                    reader.GetString(3),
+                    reader.GetInt32(4)
+                ));
             }
 
             return verblijven;
         }
+
+        public Verblijf? GetVerblijfById(int id)
+        {
+            string query = @"SELECT Id, verblijfNaam, Capaciteit, Type, Temperatuur 
+                     FROM Verblijf 
+                     WHERE Id = @id";
+
+            using SqlConnection connection = new SqlConnection(connectionstring);
+            using SqlCommand command = new SqlCommand(query, connection);
+
+            command.Parameters.AddWithValue("@id", id);
+
+            connection.Open();
+            using SqlDataReader reader = command.ExecuteReader();
+
+            if (!reader.Read())
+                return null;
+
+            return new Verblijf(
+                reader.GetInt32(0),
+                reader.GetString(1),
+                reader.GetInt32(2),
+                reader.GetString(3),
+                reader.GetInt32(4)
+            );
+        }
+
+
+        public void DeleteVerblijf(int id)
+        {
+            string query = "DELETE FROM Verblijf WHERE Id = @id";
+
+            using SqlConnection connection = new SqlConnection(connectionstring);
+            using SqlCommand command = new SqlCommand(query, connection);
+
+            command.Parameters.AddWithValue("@id", id);
+
+            connection.Open();
+            command.ExecuteNonQuery();
+        }
+
         public void AddVoeding(VoedingSchema voeding)
         {
             using (SqlConnection connection = new SqlConnection(connectionstring))
