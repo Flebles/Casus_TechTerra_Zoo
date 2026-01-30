@@ -26,9 +26,7 @@ namespace TechTerra_Zoo.Models.Pages
                 Console.WriteLine("2. Overzicht");
                 Console.WriteLine("\nDruk op ESC om terug te gaan...");
 
-                var key = Console.ReadKey(true).Key;
-
-                switch (key)
+                switch (Console.ReadKey(true).Key)
                 {
                     case ConsoleKey.D1:
                     case ConsoleKey.NumPad1:
@@ -45,6 +43,13 @@ namespace TechTerra_Zoo.Models.Pages
                     case ConsoleKey.Escape:
                         _returnPage.Show();
                         doorgaan = false;
+                        break;
+
+                    default:
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("\nOngeldige keuze, probeer opnieuw...");
+                        Console.ForegroundColor = ConsoleColor.White;
+                        Thread.Sleep(1500);
                         break;
                 }
             }

@@ -31,7 +31,9 @@ namespace TechTerra_Zoo.Models.Pages
 
                 if (dieren.Count == 0)
                 {
+                    Console.ForegroundColor = ConsoleColor.DarkYellow;
                     Console.WriteLine("Geen dieren gevonden.");
+                    Console.ForegroundColor = ConsoleColor.White;
                 }
                 else
                 {
@@ -53,12 +55,13 @@ namespace TechTerra_Zoo.Models.Pages
 
                     }
 
-                    Console.WriteLine(">----------------------------<");
+                    Console.WriteLine(">----------------------------<"); // afsluitende lijn
                 }
 
                 Console.WriteLine("\nVul een dier-ID in om te bewerken");
                 Console.WriteLine("Druk op ESC om terug te gaan...");
 
+                // "if" ipv "switch" was makkelijker hier
                 var key = Console.ReadKey(true);
 
                 if (key.Key == ConsoleKey.Escape)
@@ -78,7 +81,8 @@ namespace TechTerra_Zoo.Models.Pages
                 if (gekozenDier == null)
                     continue;
 
-                new PageDierMenu(gekozenDier, this).Show();
+                new PageDierMenu(gekozenDier, this).Show(); // open de dier pagina en stuur het dier en deze pagina als return page mee
+                doorgaan = false;
             }
         }
     }

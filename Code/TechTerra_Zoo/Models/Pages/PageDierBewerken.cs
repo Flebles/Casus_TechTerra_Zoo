@@ -29,7 +29,7 @@ namespace TechTerra_Zoo.Models.Pages
                 Console.WriteLine("--------------");
                 Console.WriteLine($"Naam: {_dier.Naam}");
                 Console.WriteLine($"Soort: {_dier.Soort}");
-                Console.WriteLine($"Geboortedatum: {(_dier.Geboortedatum?.ToString("dd-MM-yyyy") ?? "Onbekend")}");
+                Console.WriteLine($"Geboortedatum: {(_dier.Geboortedatum?.ToString("dd-MM-yyyy") ?? "Onbekend")}"); // als geboortedatum null is, toon "Onbekend"
                 Console.WriteLine($"Opmerking: {_dier.Opmerking}");
                 Console.WriteLine("--------------\n");
 
@@ -40,9 +40,7 @@ namespace TechTerra_Zoo.Models.Pages
                 Console.WriteLine("S. Opslaan");
                 Console.WriteLine("\nDruk op ESC om terug te gaan...");
 
-                var key = Console.ReadKey(true).Key;
-
-                switch (key)
+                switch (Console.ReadKey(true).Key)
                 {
                     case ConsoleKey.D1:
                     case ConsoleKey.NumPad1:
@@ -92,11 +90,19 @@ namespace TechTerra_Zoo.Models.Pages
 
                     case ConsoleKey.S:
                         Opslaan();
-                        doorgaan = false;
+                        doorgaan = false; // de loop mag alleen stoppen na opslaan of bij ESC, anders kunnen gebruikers niet meerdere velden bewerken
                         break;
 
                     case ConsoleKey.Escape:
                         _returnPage.Show();
+                        doorgaan = false;
+                        break;
+
+                    default:
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("\nOngeldige keuze, probeer opnieuw...");
+                        Console.ForegroundColor = ConsoleColor.White;
+                        Thread.Sleep(1500);
                         break;
                 }
             }
@@ -107,7 +113,9 @@ namespace TechTerra_Zoo.Models.Pages
             DierRepository repo = new DierRepository();
             repo.Update(_dier);
 
+            Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("\nDier opgeslagen.");
+            Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine("Druk op een toets om terug te gaan");
             Console.ReadKey();
             _returnPage.Show();

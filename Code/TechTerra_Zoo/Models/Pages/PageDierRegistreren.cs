@@ -21,15 +21,15 @@ namespace TechTerra_Zoo.Models.Pages
             Console.Clear();
             Console.WriteLine("=== Dier toevoegen ===\n");
 
-            Console.Write("Voer de naam van het dier in: ");
+            Console.Write("Voer de naam van het dier in:\n> ");
             string? dierNaamInput = Console.ReadLine();
             string dierNaam = dierNaamInput ?? string.Empty;
 
-            Console.Write("Wat voor soort is het dier? ");
+            Console.Write("Wat voor soort is het dier?\n> ");
             string? dierSoortInput = Console.ReadLine();
             string dierSoort = dierSoortInput ?? string.Empty;
 
-            Console.Write("Geboortedatum (dd-MM-yyyy, leeg = onbekend): ");
+            Console.Write("Geboortedatum (dd-MM-yyyy, leeg = onbekend):\n> ");
             string geboorteInput = Console.ReadLine();
 
             DateTime? dierDatum = null;
@@ -54,7 +54,7 @@ namespace TechTerra_Zoo.Models.Pages
                 }
             }
 
-            Console.Write("Voeg eventuele opmerkingen toe: ");
+            Console.Write("Voeg eventuele opmerkingen toe:\n> ");
             string? dierOpmerkingInput = Console.ReadLine();
             string dierOpmerking = dierOpmerkingInput ?? string.Empty;
 
@@ -69,7 +69,9 @@ namespace TechTerra_Zoo.Models.Pages
             DierRepository repo = new DierRepository();
             repo.VoegDierToe(nieuwDier);
 
-            Console.WriteLine($"\n=== Dier succesvol toegevoegd ===");
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine($"\nDier succesvol toegevoegd");
+            Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine("Druk op ESC om terug te gaan...");
 
             while (Console.ReadKey(true).Key != ConsoleKey.Escape) { }

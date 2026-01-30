@@ -10,10 +10,11 @@ namespace TechTerra_Zoo.Models.Pages
     {
         public void Show()
         {
+            // rianne zei dat while true niet heel goed is, dus ik heb deze bool toegevoegd die false wordt als je een andere pagina kiest
             bool doorgaan = true;
             while (doorgaan)
             {
-                Console.Clear();
+                Console.Clear(); // maak het scherm leeg, dit is nodig omdat je anders de vorige pagina blijft zien
                 Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine("=== TechTerra Zoo ===\n");
                 Console.ForegroundColor = ConsoleColor.White;
@@ -26,7 +27,7 @@ namespace TechTerra_Zoo.Models.Pages
                 {
                     case ConsoleKey.D1:
                     case ConsoleKey.NumPad1:
-                        new PageDieren(this).Show();
+                        new PageDieren(this).Show(); // this is in dit geval de MainMenu pagina, hiermee kan je later terug naar het hoofdmenu
                         doorgaan = false;
                         break;
 
@@ -48,8 +49,11 @@ namespace TechTerra_Zoo.Models.Pages
                         Console.WriteLine("\nProgramma wordt afgesloten.");
                         Environment.Exit(0);
                         break;
+
                     default:
+                        Console.ForegroundColor = ConsoleColor.Red;
                         Console.WriteLine("\nOngeldige keuze, probeer opnieuw...");
+                        Console.ForegroundColor = ConsoleColor.White;
                         Thread.Sleep(1500);
                         break;
                 }
