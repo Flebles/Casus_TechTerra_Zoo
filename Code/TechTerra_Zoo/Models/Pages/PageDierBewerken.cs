@@ -20,7 +20,8 @@ namespace TechTerra_Zoo.Models.Pages
 
         public void Show()
         {
-            while (true)
+            bool doorgaan = true;
+            while (doorgaan)
             {
                 Console.Clear();
                 Console.WriteLine($"=== Bewerk dier (ID {_dier.Id}) ===\n");
@@ -36,7 +37,8 @@ namespace TechTerra_Zoo.Models.Pages
                 Console.WriteLine("2. Soort aanpassen");
                 Console.WriteLine("3. Geboortedatum aanpassen");
                 Console.WriteLine("4. Opmerking aanpassen");
-                Console.WriteLine("5. Dier verwijderen");
+                Console.WriteLine("5. Dier voeren (nu)");
+                Console.WriteLine("6. Dier verwijderen");
                 Console.WriteLine("\nS. Opslaan");
                 Console.WriteLine("ESC. Terug");
 
@@ -48,12 +50,14 @@ namespace TechTerra_Zoo.Models.Pages
                     case ConsoleKey.NumPad1:
                         Console.Write("Nieuwe naam: ");
                         _dier.WijzigNaam(Console.ReadLine());
+                        doorgaan = false;
                         break;
 
                     case ConsoleKey.D2:
                     case ConsoleKey.NumPad2:
                         Console.Write("Nieuwe soort: ");
                         _dier.WijzigSoort(Console.ReadLine());
+                        doorgaan = false;
                         break;
 
                     case ConsoleKey.D3:
@@ -73,6 +77,7 @@ namespace TechTerra_Zoo.Models.Pages
                                 out DateTime parsed))
                             {
                                 Console.WriteLine("Ongeldig formaat.");
+                                Console.WriteLine("Druk op een toets om terug te gaan");
                                 Console.ReadKey();
                                 return;
                             }
@@ -81,26 +86,48 @@ namespace TechTerra_Zoo.Models.Pages
                         }
 
                         _dier.WijzigDatum(nieuweDatum);
+                        doorgaan = false;
                         break;
 
                     case ConsoleKey.D4:
                     case ConsoleKey.NumPad4:
                         Console.Write("Nieuwe opmerking: ");
                         _dier.WijzigOpmerking(Console.ReadLine());
+                        doorgaan = false;
                         break;
 
                     case ConsoleKey.D5:
                     case ConsoleKey.NumPad5:
+                        DierRepository repo = new DierRepository();
+                        DALSQL dal = new DALSQL();
+
+                        if (dal.IsDierVandaagGevoerd(_dier.Id))
+                        {
+                            Console.WriteLine("Dit dier is vandaag al gevoerd.");
+                        }
+                        else
+                        {
+                            dal.RegistreerVoeding(_dier.Id);
+                            Console.WriteLine("Voeding geregistreerd.");
+                        }
+
+                        Console.WriteLine("Druk op een toets om terug te gaan");
+                        Console.ReadKey();
+                        doorgaan = false;
+                        break;
+
+                    case ConsoleKey.D6:
+                    case ConsoleKey.NumPad6:
                         VerwijderDier();
-                        return;
+                        break;
 
                     case ConsoleKey.S:
                         Opslaan();
-                        return;
+                        break;
 
                     case ConsoleKey.Escape:
                         _returnPage.Show();
-                        return;
+                        break;
                 }
             }
         }
@@ -111,6 +138,7 @@ namespace TechTerra_Zoo.Models.Pages
             repo.Update(_dier);
 
             Console.WriteLine("\nDier opgeslagen.");
+            Console.WriteLine("Druk op een toets om terug te gaan");
             Console.ReadKey();
             _returnPage.Show();
         }
@@ -139,6 +167,7 @@ namespace TechTerra_Zoo.Models.Pages
                 repo.Delete(_dier.Id);
 
                 Console.WriteLine("\nDier verwijderd.");
+                Console.WriteLine("Druk op een toets om terug te gaan");
                 Console.ReadKey();
                 _returnPage.Show();
             }

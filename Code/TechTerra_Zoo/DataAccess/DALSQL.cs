@@ -106,7 +106,27 @@ namespace TechTerra_Zoo.DataAccess
                         Uitzonderingen NVARCHAR(255) NULL
                     );
                 END
+
+                IF NOT EXISTS (
+                    SELECT *
+                    FROM sys.objects
+                    WHERE object_id = OBJECT_ID(N'[dbo].[DierVoeding]')
+                    AND type = N'U'
+                )
+                BEGIN
+                    CREATE TABLE DierVoeding
+                    (
+                        Id INT IDENTITY(1,1) PRIMARY KEY,
+                        DierId INT NOT NULL,
+                        GevoerdOp DATETIME NOT NULL,
+
+                        CONSTRAINT FK_DierVoeding_Dier
+                            FOREIGN KEY (DierId) REFERENCES Dier(Id)
+                    )
+                END
             ";
+
+            // tabel DierVoeding en tabel VoedingSchema zijn verschillend
 
             using SqlConnection connection = new SqlConnection(connectionstring);
             using SqlCommand command = new SqlCommand(query, connection);
@@ -246,6 +266,62 @@ namespace TechTerra_Zoo.DataAccess
                     command.ExecuteNonQuery();
                 }
             }
+        }
+
+        public void RegistreerVoeding(int dierId)
+        {
+            string query = @"
+                INSERT INTO DierVoeding (DierId, GevoerdOp)
+                VALUES (@dierId, @tijdstip);
+            ";
+
+            using SqlConnection connection = new SqlConnection(connectionstring);
+            using SqlCommand command = new SqlCommand(query, connection);
+
+            command.Parameters.AddWithValue("@dierId", dierId);
+            command.Parameters.AddWithValue("@tijdstip", DateTime.Now);
+
+            connection.Open();
+            command.ExecuteNonQuery();
+        }
+
+        public bool IsDierVandaagGevoerd(int dierId)
+        {
+            // geen punten aftrek geven omdat ik weer "as" heb gebruikt thanks
+            string query = @"
+                SELECT COUNT(*)
+                FROM DierVoeding
+                WHERE DierId = @dierId
+                AND CAST(GevoerdOp AS DATE) = CAST(GETDATE() AS DATE);
+            ";
+
+            using SqlConnection connection = new SqlConnection(connectionstring);
+            using SqlCommand command = new SqlCommand(query, connection);
+
+            command.Parameters.AddWithValue("@dierId", dierId);
+
+            connection.Open();
+            return (int)command.ExecuteScalar() > 0;
+        }
+
+        public DateTime? GetLaatsteVoeding(int dierId)
+        {
+            string query = @"
+                SELECT TOP 1 GevoerdOp
+                FROM DierVoeding
+                WHERE DierId = @dierId
+                ORDER BY GevoerdOp DESC;
+            ";
+
+            using SqlConnection connection = new SqlConnection(connectionstring);
+            using SqlCommand command = new SqlCommand(query, connection);
+
+            command.Parameters.AddWithValue("@dierId", dierId);
+
+            connection.Open();
+            object result = command.ExecuteScalar();
+
+            return result == null ? null : (DateTime)result;
         }
 
         public List<Verblijf> GetAllVerblijven()

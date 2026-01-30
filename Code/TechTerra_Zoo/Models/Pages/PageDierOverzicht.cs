@@ -18,7 +18,10 @@ namespace TechTerra_Zoo.Models.Pages
 
         public void Show()
         {
-            while (true)
+            DALSQL dal = new DALSQL();
+
+            bool doorgaan = true;
+            while (doorgaan)
             {
                 Console.Clear();
                 Console.WriteLine("=== Dieren Overzicht ===\n");
@@ -40,6 +43,14 @@ namespace TechTerra_Zoo.Models.Pages
                         Console.WriteLine($"Soort: {d.Soort}");
                         Console.WriteLine($"Geboortedatum: {(d.Geboortedatum?.ToString("dd-MM-yyyy") ?? "Onbekend")}");
                         Console.WriteLine($"Opmerking: {d.Opmerking}");
+
+                        // controleer of het dier is gevoerd en wanneer
+                        bool gevoerdVandaag = dal.IsDierVandaagGevoerd(d.Id);
+                        DateTime? laatsteVoeding = dal.GetLaatsteVoeding(d.Id);
+
+                        Console.WriteLine($"Gevoerd vandaag: {(gevoerdVandaag ? "JA" : "NEE")}");
+                        Console.WriteLine($"Laatste voeding: {(laatsteVoeding?.ToString("dd-MM-yyyy HH:mm") ?? "Nooit")}");
+
                     }
 
                     Console.WriteLine("--------------");
@@ -53,7 +64,8 @@ namespace TechTerra_Zoo.Models.Pages
                 if (key.Key == ConsoleKey.Escape)
                 {
                     _returnPage.Show();
-                    return;
+                    doorgaan = false;
+                    break;
                 }
 
                 Console.Write("ID: ");
