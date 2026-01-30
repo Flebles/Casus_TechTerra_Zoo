@@ -22,27 +22,26 @@ namespace TechTerra_Zoo.Models.Pages
             {
                 Console.Clear();
                 Console.WriteLine("=== Verzorgers ===\n");
-                Console.WriteLine("1. ");
-                Console.WriteLine("2. ");
+
+                // aangezien dit niet voor vanacht af komt zet ik hier deze melding neer
+                Console.ForegroundColor = ConsoleColor.DarkYellow;
+                Console.WriteLine("Deze pagina is onder constructie, kom later terug");
+                Console.ForegroundColor = ConsoleColor.White;
+
                 Console.WriteLine("\nDruk op ESC om terug te gaan...");
 
-                var key = Console.ReadKey(true).Key;
-
-                switch (key)
+                switch (Console.ReadKey(true).Key)
                 {
-                    case ConsoleKey.D1:
-                    case ConsoleKey.NumPad1:
-                        doorgaan = false;
-                        break;
-
-                    case ConsoleKey.D2:
-                    case ConsoleKey.NumPad2:
-                        doorgaan = false;
-                        break;
-
                     case ConsoleKey.Escape:
                         _returnPage.Show();
                         doorgaan = false;
+                        break;
+
+                    default:
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("\nOngeldige keuze, probeer opnieuw...");
+                        Console.ForegroundColor = ConsoleColor.White;
+                        Thread.Sleep(1500);
                         break;
                 }
             }
