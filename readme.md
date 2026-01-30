@@ -3,6 +3,10 @@
 -----
 
 [Team Subway Surfers]
+- Tim
+- Noah
+- Milan
+- Lucas
 
 -----
 
@@ -11,29 +15,45 @@
 ```cs
 📦 Casus_TechTerra_Zoo/
 ├── 📁 Code/
-│   ├── 📄 TechTerra_Zoo.sln		# Visual Studio Solution
-│   ├── 📁 TechTerra_Zoo/		# Folder voor de applicatie
-│   │   ├── 📄 Program.cs		# Service
-│   │   ├── 📁 Models/			# Domain Models
-|   |   |   └── 📄 Dier.cs		# Het model product
-│   │   ├── 📁 DataAccess/		# Data Access Layer
-|   |   |   ├── 📄 DALSQL.cs		# Afhandeling SQL
-|   |   |   ├── 📄 DierRepository.cs
-|   |   |   └── 📁 Interfaces/
-|   |   |   	└── 📄 IDierRepository.cs
-│   │   └── 📁 Exceptions/		# Custom Exceptions
-├── 📁 DatabaseScripts/			# SQL Database Scripts
-|   └──📄 create_dier.sql		# SQl create script
-├── 📁 Design/				# UML Design Files
+│	├── 📄 TechTerra_Zoo.sln			# Visual Studio Solution
+│	├── 📁 TechTerra_Zoo/				# Folder voor de applicatie
+│	│	├── 📄 Program.cs				# Service
+│	│	├── 📁 Models/					# Hier bevinden zich alle classes
+│	│	│	├── 📄 Dier.cs
+│	│	│	├── 📄 Verblijf.cs
+│	│	│	├── 📄 VoedingScema.cs
+│	│   │	└── 📁 Pages/				# Alle paginas in het programma
+│	│   │		├── 📄 IPage.cs			# De base class van alle paginas
+│	│   │		├── 📄 MainMenu.cs
+│	│   │		├── 📄 PageDieren.cs
+│	│   │		├── 📄 PageDierRegistreren.cs
+│	│   │		├── 📄 PageDierOverzicht.cs
+│	│   │		├── 📄 PageDierMenu.cs
+│	│   │		├── 📄 PageDierBewerken.cs
+│	│   │		├── 📄 PageDierAanVerblijfToevoegen.cs
+│	│   │		├── 📄 PageVerblijven.cs
+│	│   │		├── 📄 PageVerblijfOverzicht.cs
+│	│   │		├── 📄 PageVerblijfToevoegen.cs
+│	│   │		├── 📄 PageVerblijfVerwijderen.cs
+│	│   │		└── 📄 PageVerzorgers.cs
+│	│   ├── 📁 DataAccess/				# Data Access Layer
+│	│	│	├── 📄 DALSQL.cs			# Afhandeling SQL
+│	│	│	├── 📄 DierRepository.cs
+│	│	│	└── 📁 Interfaces/
+│	│	│		└── 📄 IDierRepository.cs
+│	│	└── 📁 Exceptions/				# Custom Exceptions
+├── 📁 DatabaseScripts/					# SQL Database Scripts
+│	└──📄 create_dier.sql
+├── 📁 Design/							# UML Design Files
 ├── .gitignore
-└── 📄 readme.md				# Dit bestand
+└── 📄 readme.md						# Dit bestand
 ```
 
 ## Technologiestack
 
 - **Framework**: .NET Core 9.0
 - **UI**: Console applicatie
-- **Database**: Microsoft SQL Server
+- **Database**: Microsoft SQL Server Management Studio 22
 - **Modellering**: UMLet, DrawIO, Mermaid, PlantUML
 
 ## Ontwikkelomgeving
