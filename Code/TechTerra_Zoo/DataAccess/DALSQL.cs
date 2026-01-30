@@ -126,6 +126,22 @@ namespace TechTerra_Zoo.DataAccess
                             FOREIGN KEY (DierId) REFERENCES Dier(Id)
                     )
                 END
+                IF NOT EXISTS (
+                    SELECT *
+                    FROM sys.objects
+                    WHERE object_id = OBJECT_ID(N'[dbo].[VerblijfDier]')
+                    AND type = N'U'
+                )
+                BEGIN
+                CREATE TABLE VerblijfDier
+                (
+                    VerblijfId INT NOT NULL,
+                    DierId INT NOT NULL,
+                    PRIMARY KEY (VerblijfId, DierId),
+                    FOREIGN KEY (VerblijfId) REFERENCES Verblijf(Id),
+                    FOREIGN KEY (DierId) REFERENCES Dier(Id)
+                )
+                END
             ";
 
             // tabel DierVoeding en tabel VoedingSchema zijn verschillend
@@ -325,6 +341,48 @@ namespace TechTerra_Zoo.DataAccess
 
             connection.Open();
             command.ExecuteNonQuery();
+        }
+
+        public void AddDierToVerblijf(int verblijfId, int dierId)
+        {
+            string query = @"INSERT INTO VerblijfDier (VerblijfId, DierId)
+                VALUES (@verblijfId, @dierId)";
+
+            using SqlConnection connection = new SqlConnection(connectionstring);
+            using SqlCommand command = new SqlCommand(query, connection);
+
+            command.Parameters.AddWithValue("@verblijfId", verblijfId);
+            command.Parameters.AddWithValue("@dierId", dierId); 
+
+            connection.Open();
+            command.ExecuteNonQuery();
+        }
+
+        public List<string> GetDierNamenByVerblijfId(int verblijfId)
+        {
+            List<string> dieren = new();
+
+            string query = @"
+                SELECT d.Naam
+                FROM Dier d
+                INNER JOIN VerblijfDier vd ON d.Id = vd.DierId
+                WHERE vd.VerblijfId = @verblijfId
+            ";
+
+            using SqlConnection connection = new SqlConnection(connectionstring);
+            using SqlCommand command = new SqlCommand(query, connection);
+
+            command.Parameters.AddWithValue("@verblijfId", verblijfId);
+
+            connection.Open();
+            using SqlDataReader reader = command.ExecuteReader();
+
+            while (reader.Read())
+            {
+                dieren.Add(reader.GetString(0));
+            }
+
+            return dieren;
         }
 
         public List<Verblijf> GetAllVerblijven()

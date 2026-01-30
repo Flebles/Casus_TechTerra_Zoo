@@ -51,6 +51,11 @@ namespace TechTerra_Zoo.Models
             DALSQL dal = new DALSQL();
             dal.DeleteVerblijf(id);
         }
+        public List<string> GetDierNamen()
+        {
+            DALSQL dal = new DALSQL();
+            return dal.GetDierNamenByVerblijfId(this.Id);
+        }
     }
 
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TechTerra_Zoo.DataAccess;
 
 namespace TechTerra_Zoo.Models.Pages
 {
@@ -33,6 +34,17 @@ namespace TechTerra_Zoo.Models.Pages
                     Console.WriteLine(
                         $"-------------- \n{v.Id}. \nVerblijfnaam: {v.VerblijfNaam} \nType: {v.Type} \nCapaciteit: {v.Capaciteit} \nTemperatuur: {v.Temperatuur}"
                     );
+                    var dieren = v.GetDierNamen();
+
+                    Console.WriteLine("Dieren:");
+                    if (dieren.Count == 0)
+                    {
+                        Console.WriteLine("- Nog geen dieren in dit verblijf");
+                    }
+                    else
+                    {
+                        Console.WriteLine("- " + string.Join(", ", dieren));
+                    }
                 }
             }
 
