@@ -54,6 +54,10 @@
 └── 📄 readme.md						# Dit bestand
 ```
 
+## Database informatie
+- **Server Name**: (localdb)\MSSQLLocalDB
+- **Database**: TechTerra_Zoo
+
 ## Technologiestack
 
 - **Framework**: .NET Core 9.0
