@@ -43,7 +43,12 @@
 │	│	│		└── 📄 IDierRepository.cs
 │	│	└── 📁 Exceptions/				# Custom Exceptions
 ├── 📁 DatabaseScripts/					# SQL Database Scripts
-│	└──📄 create_dier.sql
+│	├── 📄 create_all_if_not_exists.sql
+│	├── 📄 create_dier.sql
+│	├── 📄 create_diervoeding.sql
+│	├── 📄 create_verblijf.sql
+│	├── 📄 create_verblijfdier.sql
+│	└── 📄 create_voedingschema.sql
 ├── 📁 Design/							# UML Design Files
 ├── .gitignore
 └── 📄 readme.md						# Dit bestand
