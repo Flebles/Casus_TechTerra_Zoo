@@ -32,18 +32,18 @@ namespace TechTerra_Zoo.Models.Pages
                 foreach (var v in verblijven)
                 {
                     Console.WriteLine(
-                        $"-------------- \n{v.Id}. \nVerblijfnaam: {v.VerblijfNaam} \nType: {v.Type} \nCapaciteit: {v.Capaciteit} \nTemperatuur: {v.Temperatuur}"
+                        $">---------------------------< \n{v.Id}. \n| Verblijfnaam: {v.VerblijfNaam} \n| Type: {v.Type} \n| Capaciteit: {v.Capaciteit} \n| Temperatuur: {v.Temperatuur}"
                     );
                     var dieren = v.GetDierNamen();
 
-                    Console.WriteLine("Dieren:");
+                    Console.WriteLine("| Dieren:");
                     if (dieren.Count == 0)
                     {
-                        Console.WriteLine("- Nog geen dieren in dit verblijf");
+                        Console.WriteLine("| Nog geen dieren in dit verblijf");
                     }
                     else
                     {
-                        Console.WriteLine("- " + string.Join(", ", dieren));
+                        Console.WriteLine("| - " + string.Join(", ", dieren));
                     }
                 }
             }
