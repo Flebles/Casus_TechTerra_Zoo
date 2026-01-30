@@ -14,7 +14,9 @@ namespace TechTerra_Zoo.Models.Pages
             while (doorgaan)
             {
                 Console.Clear();
+                Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine("=== TechTerra Zoo ===\n");
+                Console.ForegroundColor = ConsoleColor.White;
                 Console.WriteLine("1. Dieren");
                 Console.WriteLine("2. Verblijven");
                 Console.WriteLine("3. Verzorgers");
